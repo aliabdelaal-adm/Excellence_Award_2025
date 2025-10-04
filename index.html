@@ -905,6 +905,51 @@
             animation: pulse 2s ease-in-out infinite;
         }
 
+        /* Welcome Audio Controls */
+        .welcome-audio-controls {
+            position: fixed;
+            bottom: 6rem;
+            left: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .welcome-audio-btn {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .welcome-audio-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .welcome-audio-btn.playing {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 6px 25px rgba(16, 185, 129, 0.8);
+            }
+        }
+
         .auto-scroll-indicator {
             position: fixed;
             top: 50%;
@@ -1433,6 +1478,22 @@
             <button class="control-btn" onclick="stopAutoScroll()">⏹️ إيقاف</button>
         </div>
     </div>
+
+    <!-- Welcome Audio Controls -->
+    <div class="welcome-audio-controls">
+        <button class="welcome-audio-btn" id="welcomeAudioBtn" onclick="toggleWelcomeAudio()" title="رسالة ترحيبية من الشيخ زايد">
+            <span id="audioIcon">🔊</span>
+            <span id="audioText">رسالة الشيخ زايد</span>
+        </button>
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="welcomeAudio" preload="auto">
+        <!-- Note: Direct YouTube audio playback is not supported. 
+             To use this feature, download the audio from the YouTube video and add it here.
+             Example: <source src="sheikh-zayed-message.mp3" type="audio/mpeg"> -->
+        <source src="" type="audio/mpeg">
+    </audio>
 
     <!-- Authentication Modal -->
     <div id="authModal" class="auth-modal">
@@ -2060,6 +2121,72 @@
                 }, 2000);
             }
         }, { passive: true });
+
+        // Welcome Audio Functionality
+        let audioPlaying = false;
+        const welcomeAudio = document.getElementById('welcomeAudio');
+        const welcomeAudioBtn = document.getElementById('welcomeAudioBtn');
+        const audioIcon = document.getElementById('audioIcon');
+        const audioText = document.getElementById('audioText');
+
+        function toggleWelcomeAudio() {
+            if (!welcomeAudio.src || welcomeAudio.src === window.location.href) {
+                alert('⚠️ يرجى إضافة ملف الصوت أولاً.\n\nللاستخدام:\n1. قم بتحميل الصوت من فيديو اليوتيوب\n2. أضف الملف إلى المشروع\n3. حدّث مسار الملف في كود HTML');
+                return;
+            }
+
+            if (audioPlaying) {
+                welcomeAudio.pause();
+                welcomeAudio.currentTime = 0;
+                audioPlaying = false;
+                audioIcon.textContent = '🔊';
+                audioText.textContent = 'رسالة الشيخ زايد';
+                welcomeAudioBtn.classList.remove('playing');
+            } else {
+                welcomeAudio.play().then(() => {
+                    audioPlaying = true;
+                    audioIcon.textContent = '🔇';
+                    audioText.textContent = 'إيقاف الرسالة';
+                    welcomeAudioBtn.classList.add('playing');
+                }).catch(err => {
+                    console.error('خطأ في تشغيل الصوت:', err);
+                    alert('لم يتمكن المتصفح من تشغيل الصوت تلقائياً. الرجاء الضغط على الزر لتشغيل الرسالة.');
+                });
+            }
+        }
+
+        // Audio event listeners
+        if (welcomeAudio) {
+            welcomeAudio.addEventListener('ended', () => {
+                audioPlaying = false;
+                audioIcon.textContent = '🔊';
+                audioText.textContent = 'رسالة الشيخ زايد';
+                welcomeAudioBtn.classList.remove('playing');
+            });
+
+            welcomeAudio.addEventListener('error', (e) => {
+                console.error('خطأ في تحميل الصوت:', e);
+            });
+        }
+
+        // Try to autoplay on page load (will only work with user interaction due to browser policies)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait a moment before attempting autoplay
+            setTimeout(() => {
+                if (welcomeAudio && welcomeAudio.src && welcomeAudio.src !== window.location.href) {
+                    // Try to play automatically
+                    welcomeAudio.play().then(() => {
+                        audioPlaying = true;
+                        audioIcon.textContent = '🔇';
+                        audioText.textContent = 'إيقاف الرسالة';
+                        welcomeAudioBtn.classList.add('playing');
+                    }).catch(err => {
+                        // Autoplay was prevented, user will need to click the button
+                        console.log('التشغيل التلقائي تم منعه من المتصفح. الرجاء الضغط على الزر للتشغيل.');
+                    });
+                }
+            }, 500);
+        });
     </script>
 </body>
 </html>
