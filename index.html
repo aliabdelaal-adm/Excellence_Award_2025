@@ -824,6 +824,7 @@
             outline: 2px dashed var(--accent-color);
             outline-offset: 4px;
             cursor: pointer;
+            background: rgba(79, 172, 254, 0.05);
         }
 
         .edit-mode .editable::after {
@@ -837,6 +838,129 @@
 
         .edit-mode .editable:hover::after {
             opacity: 1;
+        }
+
+        /* Edit Toolbar */
+        .edit-toolbar {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: var(--light-bg);
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--accent-color);
+            z-index: 1500;
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-width: 200px;
+        }
+
+        .edit-toolbar.active {
+            display: flex;
+        }
+
+        .edit-toolbar h4 {
+            color: var(--accent-color);
+            margin: 0 0 1rem 0;
+            font-size: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .edit-toolbar-btn {
+            padding: 0.6rem 1rem;
+            background: var(--dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .edit-toolbar-btn:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateX(-3px);
+        }
+
+        .edit-toolbar-btn.danger {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .edit-toolbar-btn.danger:hover {
+            background: rgb(239, 68, 68);
+        }
+
+        /* Format Controls */
+        .format-controls {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .format-controls.active {
+            display: flex;
+        }
+
+        .format-controls label {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .format-controls input,
+        .format-controls select {
+            padding: 0.4rem;
+            background: var(--dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .format-controls input:focus,
+        .format-controls select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        /* Deletable Items */
+        .edit-mode .project-card,
+        .edit-mode .achievement-card,
+        .edit-mode .portfolio-card,
+        .edit-mode .feature-card {
+            position: relative;
+        }
+
+        .edit-mode .project-card:hover::before,
+        .edit-mode .achievement-card:hover::before,
+        .edit-mode .portfolio-card:hover::before,
+        .edit-mode .feature-card:hover::before {
+            content: '🗑️ حذف';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            z-index: 10;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
         }
 
         /* Admin Controls */
@@ -1431,6 +1555,50 @@
         <button class="admin-btn" onclick="toggleEditMode()">✏️ تعديل المحتوى</button>
     </div>
 
+    <!-- Edit Toolbar -->
+    <div class="edit-toolbar" id="editToolbar">
+        <h4>⚙️ أدوات التحرير</h4>
+        <button class="edit-toolbar-btn" onclick="editSelectedElement()">
+            ✏️ تحرير النص
+        </button>
+        <button class="edit-toolbar-btn" onclick="toggleFormatControls()">
+            🎨 تنسيق النص
+        </button>
+        <div class="format-controls" id="formatControls">
+            <label>حجم الخط:</label>
+            <select id="fontSizeSelect" onchange="applyFontSize()">
+                <option value="">-- اختر الحجم --</option>
+                <option value="0.8rem">صغير جداً</option>
+                <option value="1rem">صغير</option>
+                <option value="1.2rem">متوسط</option>
+                <option value="1.5rem">كبير</option>
+                <option value="2rem">كبير جداً</option>
+                <option value="2.5rem">عملاق</option>
+            </select>
+            
+            <label>لون النص:</label>
+            <input type="color" id="textColorPicker" onchange="applyTextColor()" value="#f1f5f9">
+            
+            <label>وزن الخط:</label>
+            <select id="fontWeightSelect" onchange="applyFontWeight()">
+                <option value="">-- اختر الوزن --</option>
+                <option value="400">عادي</option>
+                <option value="600">متوسط</option>
+                <option value="700">عريض</option>
+                <option value="900">عريض جداً</option>
+            </select>
+        </div>
+        <button class="edit-toolbar-btn danger" onclick="deleteSelectedElement()">
+            🗑️ حذف العنصر
+        </button>
+        <button class="edit-toolbar-btn" onclick="saveAllChanges()">
+            💾 حفظ جميع التعديلات
+        </button>
+        <button class="edit-toolbar-btn" onclick="closeEditToolbar()">
+            ❌ إغلاق
+        </button>
+    </div>
+
     <!-- Auto-Scroll Controls -->
     <div class="auto-scroll-controls">
         <button class="auto-scroll-btn" onclick="toggleAutoScroll()">
@@ -1498,6 +1666,8 @@
                     link: "inspection-plan-system.html"
                 },
                 {
+ copilot/fix-b7a73cd4-63e1-46c5-b9b0-53f36f1da2ad
+
                     title: "منصة التحليلات التفاعلية",
                     description: "لوحات تحكم تفاعلية في الوقت الفعلي مع تحليل البيانات بالذكاء الاصطناعي",
                     icon: "📈",
@@ -1505,6 +1675,7 @@
                     link: "analytics-platform.html"
                 },
                 {
+ main
                     title: "نظام إدارة المشاريع السحابي",
                     description: "تتبع وإدارة المشاريع بشكل كامل عبر السحابة مع تكامل API",
                     icon: "🚀",
@@ -1515,12 +1686,6 @@
                     description: "أتمتة إنشاء المستندات والتقارير باستخدام القوالب الذكية والذكاء الاصطناعي",
                     icon: "📝",
                     tags: ["Automation", "AI", "Templates"]
-                },
-                {
-                    title: "نظام الأرشفة الإلكترونية",
-                    description: "حلول أرشفة ذكية مع بحث متقدم وتنظيم تلقائي باستخدام تقنيات ML",
-                    icon: "📚",
-                    tags: ["ML", "Search", "Organization"]
                 },
                 {
                     title: "منصة العروض التفاعلية",
@@ -1713,6 +1878,7 @@
         // Editable Content System
         let isEditMode = false;
         let isAuthenticated = false;
+        let selectedElement = null;
         const ADMIN_PASSWORD = 'admin2024'; // Change this to your secure password
 
         function toggleEditMode() {
@@ -1726,35 +1892,199 @@
             
             const btn = document.querySelector('.admin-btn');
             if (btn) {
-                btn.textContent = isEditMode ? '💾 حفظ التعديلات' : '✏️ تعديل المحتوى';
+                btn.textContent = isEditMode ? '⏹️ إيقاف التحرير' : '✏️ تعديل المحتوى';
             }
             
             if (isEditMode) {
                 activateEditableElements();
+                activateDeletableElements();
             } else {
-                saveEditableContent();
+                deactivateEditableElements();
+                closeEditToolbar();
             }
         }
 
         function activateEditableElements() {
             document.querySelectorAll('.editable').forEach(el => {
-                el.addEventListener('click', handleEditClick);
+                el.addEventListener('click', handleElementClick);
             });
         }
 
-        function handleEditClick(e) {
+        function activateDeletableElements() {
+            const deletableSelectors = '.project-card, .achievement-card, .portfolio-card, .feature-card';
+            document.querySelectorAll(deletableSelectors).forEach(el => {
+                el.addEventListener('click', handleElementClick);
+            });
+        }
+
+        function deactivateEditableElements() {
+            document.querySelectorAll('.editable, .project-card, .achievement-card, .portfolio-card, .feature-card').forEach(el => {
+                el.removeEventListener('click', handleElementClick);
+            });
+        }
+
+        function handleElementClick(e) {
             if (!isEditMode) return;
             
-            e.stopPropagation();
-            const element = e.currentTarget;
-            const field = element.dataset.field;
-            const currentValue = element.textContent;
+            // Check if clicked on delete icon area
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
             
-            const newValue = prompt('تعديل المحتوى:', currentValue);
-            if (newValue && newValue !== currentValue) {
-                element.textContent = newValue;
-                saveToLocalStorage(field, newValue);
+            // If clicked in top-left corner (delete area), delete the element
+            if (clickX < 80 && clickY < 50 && 
+                (e.currentTarget.classList.contains('project-card') ||
+                 e.currentTarget.classList.contains('achievement-card') ||
+                 e.currentTarget.classList.contains('portfolio-card') ||
+                 e.currentTarget.classList.contains('feature-card'))) {
+                if (confirm('هل تريد حذف هذا العنصر؟')) {
+                    e.currentTarget.remove();
+                    saveDeletedElement(e.currentTarget);
+                }
+                return;
             }
+            
+            e.stopPropagation();
+            selectedElement = e.currentTarget;
+            showEditToolbar();
+        }
+
+        function showEditToolbar() {
+            const toolbar = document.getElementById('editToolbar');
+            if (toolbar) {
+                toolbar.classList.add('active');
+            }
+        }
+
+        function closeEditToolbar() {
+            const toolbar = document.getElementById('editToolbar');
+            if (toolbar) {
+                toolbar.classList.remove('active');
+            }
+            selectedElement = null;
+        }
+
+        function editSelectedElement() {
+            if (!selectedElement) {
+                alert('الرجاء تحديد عنصر أولاً');
+                return;
+            }
+            
+            const currentValue = selectedElement.textContent.trim();
+            const newValue = prompt('تعديل المحتوى:', currentValue);
+            
+            if (newValue && newValue !== currentValue) {
+                selectedElement.textContent = newValue;
+                const field = selectedElement.dataset.field;
+                if (field) {
+                    saveToLocalStorage(field, newValue);
+                }
+            }
+        }
+
+        function toggleFormatControls() {
+            const controls = document.getElementById('formatControls');
+            if (controls) {
+                controls.classList.toggle('active');
+            }
+        }
+
+        function applyFontSize() {
+            if (!selectedElement) {
+                alert('الرجاء تحديد عنصر أولاً');
+                return;
+            }
+            
+            const size = document.getElementById('fontSizeSelect').value;
+            if (size) {
+                selectedElement.style.fontSize = size;
+                saveElementStyle(selectedElement, 'fontSize', size);
+            }
+        }
+
+        function applyTextColor() {
+            if (!selectedElement) {
+                alert('الرجاء تحديد عنصر أولاً');
+                return;
+            }
+            
+            const color = document.getElementById('textColorPicker').value;
+            selectedElement.style.color = color;
+            saveElementStyle(selectedElement, 'color', color);
+        }
+
+        function applyFontWeight() {
+            if (!selectedElement) {
+                alert('الرجاء تحديد عنصر أولاً');
+                return;
+            }
+            
+            const weight = document.getElementById('fontWeightSelect').value;
+            if (weight) {
+                selectedElement.style.fontWeight = weight;
+                saveElementStyle(selectedElement, 'fontWeight', weight);
+            }
+        }
+
+        function deleteSelectedElement() {
+            if (!selectedElement) {
+                alert('الرجاء تحديد عنصر أولاً');
+                return;
+            }
+            
+            if (confirm('هل تريد حذف هذا العنصر؟')) {
+                selectedElement.remove();
+                saveDeletedElement(selectedElement);
+                closeEditToolbar();
+            }
+        }
+
+        function saveDeletedElement(element) {
+            const deletedElements = JSON.parse(localStorage.getItem('deletedElements') || '[]');
+            
+            // Create a unique identifier for the element
+            const identifier = {
+                classList: Array.from(element.classList),
+                textContent: element.textContent.substring(0, 50),
+                timestamp: Date.now()
+            };
+            
+            deletedElements.push(identifier);
+            localStorage.setItem('deletedElements', JSON.stringify(deletedElements));
+        }
+
+        function saveElementStyle(element, property, value) {
+            const field = element.dataset.field || generateElementId(element);
+            const styles = JSON.parse(localStorage.getItem('elementStyles') || '{}');
+            
+            if (!styles[field]) {
+                styles[field] = {};
+            }
+            
+            styles[field][property] = value;
+            localStorage.setItem('elementStyles', JSON.stringify(styles));
+        }
+
+        function generateElementId(element) {
+            return `element_${element.tagName}_${Date.now()}`;
+        }
+
+        function loadElementStyles() {
+            const styles = JSON.parse(localStorage.getItem('elementStyles') || '{}');
+            
+            Object.keys(styles).forEach(field => {
+                const element = document.querySelector(`[data-field="${field}"]`);
+                if (element && styles[field]) {
+                    Object.keys(styles[field]).forEach(property => {
+                        element.style[property] = styles[field][property];
+                    });
+                }
+            });
+        }
+
+        function saveAllChanges() {
+            // Save all current edits
+            alert('تم حفظ جميع التعديلات بنجاح! ✅\n\nملاحظة: التعديلات محفوظة في المتصفح المحلي.');
         }
 
         function saveToLocalStorage(field, value) {
@@ -1771,6 +2101,9 @@
                     element.textContent = content[field];
                 }
             });
+            
+            // Load element styles
+            loadElementStyles();
         }
 
         function saveEditableContent() {
