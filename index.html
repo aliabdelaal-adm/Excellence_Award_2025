@@ -294,6 +294,32 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
+        .project-card.clickable {
+            cursor: pointer;
+        }
+
+        .project-card.clickable:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.4);
+        }
+
+        .view-project-btn {
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0891b2 100%);
+            color: var(--dark-bg);
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card.clickable:hover .view-project-btn {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+        }
+
         .project-card .project-image {
             width: 100%;
             height: 200px;
@@ -751,11 +777,19 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
+ copilot/fix-74b28c11-358a-42e9-87cc-a8f1582149d8
             <h1 class="editable" data-field="hero-title">نحو التحول الذكي للمستقبل</h1>
             <p class="tagline editable" data-field="hero-tagline">تحدي التميز الداخلي - بلدية أبوظبي</p>
             <p class="editable" data-field="hero-description">
                 منصة مبتكرة لتطوير الحلول الذكية داخل بلدية أبوظبي، نحول العمليات التقليدية إلى تطبيقات رقمية متقدمة
                 باستخدام الذكاء الاصطناعي والحوسبة السحابية لتحقيق التحول الذكي نحو مستقبل أفضل
+
+            <h1>منصة تطوير الحلول السحابية الذكية</h1>
+            <p class="tagline">أحول أفكارك إلى واقع رقمي متقدم باستخدام الذكاء الاصطناعي</p>
+            <p>
+                أنا الدكتور علي عبدالعال من إدارة الرفق بالحيوان ببلدية مدينة أبوظبي، متخصص في تطوير حلول برمجية ذكية تعتمد على الذكاء الاصطناعي والحوسبة السحابية
+                لتحويل العمليات المؤسسية التقليدية إلى منصات رقمية متقدمة وفعالة
+ main
             </p>
             <div class="cta-buttons">
                 <a href="#projects" class="btn btn-primary">استكشف المشاريع</a>
@@ -767,8 +801,13 @@
     <!-- About Section -->
     <section id="about">
         <div class="container">
+ copilot/fix-74b28c11-358a-42e9-87cc-a8f1582149d8
             <h2 class="section-title editable" data-field="about-title">لماذا أنا الخيار الأمثل؟</h2>
             <p class="section-subtitle editable" data-field="about-subtitle">
+
+            <h2 class="section-title">لماذا أنا الخيار الأمثل؟</h2>
+            <p class="section-subtitle">
+ main
                 أقدم حلولاً مبتكرة تتجاوز التطبيقات التقليدية مثل Word و Excel و PowerPoint
                 إلى عالم البرمجة الذكية والتقارير التفاعلية المتقدمة
             </p>
@@ -810,9 +849,9 @@
     <!-- Projects Section -->
     <section id="projects">
         <div class="container">
-            <h2 class="section-title">مشاريعنا المميزة</h2>
+            <h2 class="section-title">مشاريعي المميزة</h2>
             <p class="section-subtitle">
-                مجموعة من المشاريع التي توضح خبرتنا في تطوير الحلول الذكية
+                مجموعة من المشاريع التي توضح خبرتي في تطوير الحلول الذكية
             </p>
             <div class="projects-grid" id="projectsContainer">
                 <!-- Projects will be loaded dynamically -->
@@ -898,12 +937,33 @@
     <!-- Portfolio/Achievements Section -->
     <section id="achievements">
         <div class="container">
+ copilot/fix-74b28c11-358a-42e9-87cc-a8f1582149d8
             <h2 class="section-title editable" data-field="achievements-title">ملف إنجازاتي</h2>
             <p class="section-subtitle editable" data-field="achievements-subtitle">
                 مجموعة من المشاريع والأعمال المحفوظة والجاهزة للعرض
             </p>
             <div class="portfolio-grid" id="portfolioContainer">
                 <!-- Portfolio items will be loaded dynamically -->
+
+            <h2 class="section-title">إنجازاتي</h2>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="number">50+</div>
+                    <div class="label">مشروع ناجح</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="number">100%</div>
+                    <div class="label">رضا العملاء</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="number">5+</div>
+                    <div class="label">سنوات خبرة</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="number">24/7</div>
+                    <div class="label">دعم فني</div>
+                </div>
+ main
             </div>
         </div>
     </section>
@@ -911,10 +971,17 @@
     <!-- Contact Section -->
     <section id="contact">
         <div class="container">
-            <h2 class="section-title">تواصل معنا</h2>
+            <h2 class="section-title">تواصل معي</h2>
             <p class="section-subtitle">
-                لديك مشروع في ذهنك؟ دعنا نساعدك في تحويله إلى واقع
+                لديك مشروع في ذهنك؟ دعني أساعدك في تحويله إلى واقع
             </p>
+            <div style="text-align: center; margin-bottom: 3rem; padding: 2rem; background: var(--light-bg); border-radius: 20px;">
+                <h3 style="color: var(--accent-color); margin-bottom: 1.5rem;">معلومات التواصل</h3>
+                <p style="margin: 0.5rem 0;"><strong>الاسم:</strong> الدكتور علي عبدالعال</p>
+                <p style="margin: 0.5rem 0;"><strong>الجهة:</strong> إدارة الرفق بالحيوان - بلدية مدينة أبوظبي</p>
+                <p style="margin: 0.5rem 0;"><strong>البريد الإلكتروني:</strong> <a href="mailto:Ali.Abdelaal@adm.gov.ae" style="color: var(--accent-color);">Ali.Abdelaal@adm.gov.ae</a></p>
+                <p style="margin: 0.5rem 0;"><strong>رقم التواصل:</strong> <a href="tel:0581187777" style="color: var(--accent-color);">0581187777</a></p>
+            </div>
             <form class="contact-form" onsubmit="handleSubmit(event)">
                 <div class="form-group">
                     <label for="name">الاسم</label>
@@ -937,14 +1004,20 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                <a href="#" title="GitHub">💻</a>
-                <a href="#" title="LinkedIn">🔗</a>
-                <a href="#" title="Twitter">🐦</a>
-                <a href="#" title="Email">📧</a>
+                <a href="https://github.com/aliabdelaal-adm" title="GitHub" target="_blank">💻</a>
+                <a href="mailto:Ali.Abdelaal@adm.gov.ae" title="Email">📧</a>
+                <a href="tel:0581187777" title="Phone">📱</a>
             </div>
+ copilot/fix-74b28c11-358a-42e9-87cc-a8f1582149d8
             <p class="editable" data-field="footer-text">&copy; 2024 نحو التحول الذكي - منصة التميز الداخلي لبلدية أبوظبي</p>
+
+            <p>&copy; 2024 مشروع التميز - د. علي عبدالعال</p>
+            <p style="color: var(--text-gray); margin-top: 0.5rem;">
+                إدارة الرفق بالحيوان - بلدية مدينة أبوظبي
+            </p>
+ main
             <p style="color: var(--text-gray); margin-top: 1rem;">
-                تم التطوير باستخدام HTML5, CSS3, JavaScript - بدون اعتماد على Word أو Excel أو PowerPoint
+                قمت بالتطوير باستخدام HTML5, CSS3, JavaScript - بدون اعتماد على Word أو Excel أو PowerPoint
             </p>
         </div>
     </footer>
@@ -982,6 +1055,13 @@
 
         function getDefaultProjects() {
             return [
+                {
+                    title: "مشروع إدارة التميز المؤسسي",
+                    description: "مشروع استراتيجي متكامل لتأسيس إدارة متخصصة تجمع أفضل الكوادر البشرية في بلدية أبوظبي، بمعايير عالمية ذكية وتقنيات الذكاء الاصطناعي",
+                    icon: "🏆",
+                    tags: ["Excellence", "AI", "Strategic Planning", "Innovation"],
+                    link: "excellence-department-project.html"
+                },
                 {
                     title: "نظام إدارة التقارير الذكي",
                     description: "منصة متكاملة لإنشاء وإدارة التقارير المؤسسية باستخدام HTML و JavaScript بدلاً من Excel و Word",
@@ -1024,7 +1104,7 @@
         function displayProjects(projects) {
             const container = document.getElementById('projectsContainer');
             container.innerHTML = projects.map(project => `
-                <div class="project-card">
+                <div class="project-card ${project.link ? 'clickable' : ''}" ${project.link ? `onclick="window.location.href='${project.link}'"` : ''}>
                     <div class="project-image">${project.icon}</div>
                     <div class="project-content">
                         <h3>${project.title}</h3>
@@ -1032,6 +1112,7 @@
                         <div class="tags">
                             ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
+                        ${project.link ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
                     </div>
                 </div>
             `).join('');
