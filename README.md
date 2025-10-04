@@ -76,14 +76,13 @@ An integrated project presented for the Excellence Award by developing a profess
 ### AI/ML
 - TensorFlow
 - PyTorch
-- scikit-learn
 - OpenAI API Integration
 
 ### Cloud Services
 - AWS / Azure / Google Cloud
 - Docker / Kubernetes
 - MongoDB / PostgreSQL
-- Redis / Elasticsearch
+- Redis
 
 ---
 
