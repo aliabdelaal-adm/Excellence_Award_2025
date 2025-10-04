@@ -294,6 +294,32 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
+        .project-card.clickable {
+            cursor: pointer;
+        }
+
+        .project-card.clickable:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.4);
+        }
+
+        .view-project-btn {
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0891b2 100%);
+            color: var(--dark-bg);
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card.clickable:hover .view-project-btn {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+        }
+
         .project-card .project-image {
             width: 100%;
             height: 200px;
@@ -857,6 +883,13 @@
         function getDefaultProjects() {
             return [
                 {
+                    title: "مشروع إدارة التميز المؤسسي",
+                    description: "مشروع استراتيجي متكامل لتأسيس إدارة متخصصة تجمع أفضل الكوادر البشرية في بلدية أبوظبي، بمعايير عالمية ذكية وتقنيات الذكاء الاصطناعي",
+                    icon: "🏆",
+                    tags: ["Excellence", "AI", "Strategic Planning", "Innovation"],
+                    link: "excellence-department-project.html"
+                },
+                {
                     title: "نظام إدارة التقارير الذكي",
                     description: "منصة متكاملة لإنشاء وإدارة التقارير المؤسسية باستخدام HTML و JavaScript بدلاً من Excel و Word",
                     icon: "📊",
@@ -898,7 +931,7 @@
         function displayProjects(projects) {
             const container = document.getElementById('projectsContainer');
             container.innerHTML = projects.map(project => `
-                <div class="project-card">
+                <div class="project-card ${project.link ? 'clickable' : ''}" ${project.link ? `onclick="window.location.href='${project.link}'"` : ''}>
                     <div class="project-image">${project.icon}</div>
                     <div class="project-content">
                         <h3>${project.title}</h3>
@@ -906,6 +939,7 @@
                         <div class="tags">
                             ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
+                        ${project.link ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
                     </div>
                 </div>
             `).join('');
