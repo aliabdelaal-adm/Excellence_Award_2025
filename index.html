@@ -1213,9 +1213,138 @@
             outline: none;
             border-color: var(--accent-color);
         }
+
+        /* Modal Overlay Styles */
+        .system-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            animation: fadeIn 0.3s;
+        }
+
+        .system-modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .modal-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-btn:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .close-btn {
+            background: rgba(220, 38, 38, 0.9);
+            border-color: rgba(220, 38, 38, 1);
+        }
+
+        .close-btn:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .modal-iframe-container {
+            flex: 1;
+            position: relative;
+            background: white;
+        }
+
+        .modal-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes spinIcon {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .loading-spinner.active {
+            animation: spinIcon 1s linear infinite;
+        }
     </style>
 </head>
 <body>
+    <!-- System Modal -->
+    <div class="system-modal" id="systemModal">
+        <div class="modal-header">
+            <div class="modal-title">
+                <span id="modalIcon">🌐</span>
+                <span id="modalTitleText">زيارة النظام المباشر</span>
+            </div>
+            <div class="modal-controls">
+                <button class="modal-btn" onclick="openInNewTab()">
+                    🔗 فتح في نافذة جديدة
+                </button>
+                <button class="modal-btn close-btn" onclick="closeSystemModal()">
+                    ✕ إغلاق
+                </button>
+            </div>
+        </div>
+        <div class="modal-iframe-container">
+            <div class="loading-spinner active" id="loadingSpinner">⏳</div>
+            <iframe class="modal-iframe" id="systemIframe" src="about:blank"></iframe>
+        </div>
+    </div>
     <!-- Navigation -->
     <nav>
         <div class="container">
@@ -1549,19 +1678,30 @@
 
         function displayProjects(projects) {
             const container = document.getElementById('projectsContainer');
-            container.innerHTML = projects.map(project => `
-                <div class="project-card ${project.link ? 'clickable' : ''}" ${project.link ? `onclick="window.location.href='${project.link}'"` : ''}>
-                    <div class="project-image">${project.icon}</div>
-                    <div class="project-content">
-                        <h3>${project.title}</h3>
-                        <p>${project.description}</p>
-                        <div class="tags">
-                            ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            container.innerHTML = projects.map(project => {
+                let clickHandler = '';
+                if (project.link) {
+                    // Check if it's an external link (starts with http)
+                    if (project.link.startsWith('http')) {
+                        clickHandler = `onclick="openSystemModal('${project.link}', '${project.icon} ${project.title}'); return false;"`;
+                    } else {
+                        clickHandler = `onclick="window.location.href='${project.link}'"`;
+                    }
+                }
+                return `
+                    <div class="project-card ${project.link ? 'clickable' : ''}" ${clickHandler}>
+                        <div class="project-image">${project.icon}</div>
+                        <div class="project-content">
+                            <h3>${project.title}</h3>
+                            <p>${project.description}</p>
+                            <div class="tags">
+                                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            ${project.link ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
                         </div>
-                        ${project.link ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // File Upload Handling
@@ -2173,6 +2313,77 @@
                     });
                 }
             }, 500);
+        });
+
+        // Modal Functions
+        let currentSystemUrl = '';
+
+        function openSystemModal(url, title) {
+            currentSystemUrl = url;
+            const modal = document.getElementById('systemModal');
+            const iframe = document.getElementById('systemIframe');
+            const modalTitleText = document.getElementById('modalTitleText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // Set title
+            modalTitleText.textContent = title;
+
+            // Show modal
+            modal.classList.add('active');
+
+            // Show loading spinner
+            loadingSpinner.classList.add('active');
+            loadingSpinner.style.display = 'block';
+
+            // Load iframe
+            iframe.src = url;
+
+            // Hide spinner when loaded
+            iframe.onload = function() {
+                loadingSpinner.style.display = 'none';
+            };
+
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSystemModal() {
+            const modal = document.getElementById('systemModal');
+            const iframe = document.getElementById('systemIframe');
+
+            // Hide modal
+            modal.classList.remove('active');
+
+            // Clear iframe
+            iframe.src = 'about:blank';
+
+            // Restore body scroll
+            document.body.style.overflow = '';
+
+            currentSystemUrl = '';
+        }
+
+        function openInNewTab() {
+            if (currentSystemUrl) {
+                window.open(currentSystemUrl, '_blank');
+            }
+        }
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('systemModal');
+                if (modal.classList.contains('active')) {
+                    closeSystemModal();
+                }
+            }
+        });
+
+        // Close modal when clicking outside iframe
+        document.getElementById('systemModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeSystemModal();
+            }
         });
     </script>
 </body>
