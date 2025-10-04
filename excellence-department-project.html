@@ -1122,13 +1122,7 @@
         </div>
     </div>
 
-    <!-- Auto-Scroll Controls -->
-    <div class="auto-scroll-controls">
-        <button class="auto-scroll-btn" onclick="toggleAutoScroll()">
-            <span id="autoScrollIcon">▶️</span>
-            <span id="autoScrollText">تشغيل العرض التلقائي</span>
-        </button>
-    </div>
+
 
     <!-- Auto-Scroll Indicator -->
     <div class="auto-scroll-indicator" id="autoScrollIndicator">
@@ -1205,14 +1199,7 @@
             currentSectionIndex = 0;
 
             // Update UI
-            const btn = document.querySelector('.auto-scroll-btn');
-            const icon = document.getElementById('autoScrollIcon');
-            const text = document.getElementById('autoScrollText');
             const indicator = document.getElementById('autoScrollIndicator');
-
-            if (btn) btn.classList.add('active');
-            if (icon) icon.textContent = '⏸️';
-            if (text) text.textContent = 'إيقاف العرض التلقائي';
             if (indicator) indicator.classList.add('active');
 
             // Scroll to top first
@@ -1307,14 +1294,7 @@
             }
 
             // Update UI
-            const btn = document.querySelector('.auto-scroll-btn');
-            const icon = document.getElementById('autoScrollIcon');
-            const text = document.getElementById('autoScrollText');
             const indicator = document.getElementById('autoScrollIndicator');
-
-            if (btn) btn.classList.remove('active');
-            if (icon) icon.textContent = '▶️';
-            if (text) text.textContent = 'تشغيل العرض التلقائي';
             if (indicator) indicator.classList.remove('active');
 
             // Reset progress
@@ -1350,6 +1330,11 @@
                 }, 2000);
             }
         }, { passive: true });
+
+        // Auto-start scrolling when page loads
+        window.addEventListener('load', () => {
+            startAutoScroll();
+        });
     </script>
 </body>
 </html>

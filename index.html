@@ -1416,13 +1416,7 @@
         <button class="admin-btn" onclick="toggleEditMode()">✏️ تعديل المحتوى</button>
     </div>
 
-    <!-- Auto-Scroll Controls -->
-    <div class="auto-scroll-controls">
-        <button class="auto-scroll-btn" onclick="toggleAutoScroll()">
-            <span id="autoScrollIcon">▶️</span>
-            <span id="autoScrollText">تشغيل العرض التلقائي</span>
-        </button>
-    </div>
+
 
     <!-- Auto-Scroll Indicator -->
     <div class="auto-scroll-indicator" id="autoScrollIndicator">
@@ -1788,6 +1782,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadProjects();
             loadPortfolio();
+            // Auto-start scrolling
+            startAutoScroll();
         });
 
         // Drag and Drop
@@ -1937,14 +1933,7 @@
             currentSectionIndex = 0;
 
             // Update UI
-            const btn = document.querySelector('.auto-scroll-btn');
-            const icon = document.getElementById('autoScrollIcon');
-            const text = document.getElementById('autoScrollText');
             const indicator = document.getElementById('autoScrollIndicator');
-
-            if (btn) btn.classList.add('active');
-            if (icon) icon.textContent = '⏸️';
-            if (text) text.textContent = 'إيقاف العرض التلقائي';
             if (indicator) indicator.classList.add('active');
 
             // Scroll to first section
@@ -2034,14 +2023,7 @@
             }
 
             // Update UI
-            const btn = document.querySelector('.auto-scroll-btn');
-            const icon = document.getElementById('autoScrollIcon');
-            const text = document.getElementById('autoScrollText');
             const indicator = document.getElementById('autoScrollIndicator');
-
-            if (btn) btn.classList.remove('active');
-            if (icon) icon.textContent = '▶️';
-            if (text) text.textContent = 'تشغيل العرض التلقائي';
             if (indicator) indicator.classList.remove('active');
 
             // Reset progress
