@@ -312,6 +312,143 @@
             box-shadow: 0 6px 20px rgba(0,166,81,0.4);
         }
 
+        /* Auto-Scroll Controls */
+        .auto-scroll-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 1000;
+        }
+
+        .auto-scroll-btn {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .auto-scroll-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.6);
+        }
+
+        .auto-scroll-btn.active {
+            background: linear-gradient(135deg, #00a651 0%, #008841 100%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+            }
+            50% {
+                box-shadow: 0 6px 25px rgba(0, 102, 204, 0.8);
+            }
+        }
+
+        .auto-scroll-indicator {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 20px;
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 4px 20px rgba(0, 102, 204, 0.3);
+            z-index: 999;
+        }
+
+        .auto-scroll-indicator.active {
+            display: flex;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        .auto-scroll-indicator .icon {
+            font-size: 2rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .auto-scroll-indicator .text {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            text-align: center;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .auto-scroll-indicator .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .auto-scroll-indicator .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .auto-scroll-indicator .controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .auto-scroll-indicator .control-btn {
+            padding: 0.5rem 1rem;
+            background: var(--light-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            color: var(--text-dark);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .auto-scroll-indicator .control-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
         @media print {
             .header {
                 background: white;
@@ -985,6 +1122,30 @@
         </div>
     </div>
 
+    <!-- Auto-Scroll Controls -->
+    <div class="auto-scroll-controls">
+        <button class="auto-scroll-btn" onclick="toggleAutoScroll()">
+            <span id="autoScrollIcon">▶️</span>
+            <span id="autoScrollText">تشغيل العرض التلقائي</span>
+        </button>
+    </div>
+
+    <!-- Auto-Scroll Indicator -->
+    <div class="auto-scroll-indicator" id="autoScrollIndicator">
+        <div class="icon">📜</div>
+        <div class="text">
+            العرض التلقائي نشط<br>
+            <small style="opacity: 0.7;">اضغط مسافة للإيقاف المؤقت</small>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="autoScrollProgress"></div>
+        </div>
+        <div class="controls">
+            <button class="control-btn" onclick="pauseAutoScroll()">⏸️ إيقاف مؤقت</button>
+            <button class="control-btn" onclick="stopAutoScroll()">⏹️ إيقاف</button>
+        </div>
+    </div>
+
     <div class="footer">
         <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">
             🏆 مشروع إدارة التميز المؤسسي
@@ -1016,6 +1177,179 @@
         function printDocument() {
             window.print();
         }
+
+        // Auto-Scroll Feature
+        let autoScrollActive = false;
+        let autoScrollPaused = false;
+        let autoScrollInterval = null;
+        let currentSectionIndex = 0;
+        let sections = [];
+
+        function initAutoScroll() {
+            // Get all main sections
+            sections = Array.from(document.querySelectorAll('.section'));
+        }
+
+        function toggleAutoScroll() {
+            if (!autoScrollActive) {
+                startAutoScroll();
+            } else {
+                stopAutoScroll();
+            }
+        }
+
+        function startAutoScroll() {
+            initAutoScroll();
+            autoScrollActive = true;
+            autoScrollPaused = false;
+            currentSectionIndex = 0;
+
+            // Update UI
+            const btn = document.querySelector('.auto-scroll-btn');
+            const icon = document.getElementById('autoScrollIcon');
+            const text = document.getElementById('autoScrollText');
+            const indicator = document.getElementById('autoScrollIndicator');
+
+            if (btn) btn.classList.add('active');
+            if (icon) icon.textContent = '⏸️';
+            if (text) text.textContent = 'إيقاف العرض التلقائي';
+            if (indicator) indicator.classList.add('active');
+
+            // Scroll to top first
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Start scrolling after a short delay
+            setTimeout(() => {
+                if (autoScrollActive) {
+                    scrollToSection(0);
+                }
+            }, 1000);
+        }
+
+        function scrollToSection(index) {
+            if (index >= sections.length) {
+                // Reached end, restart or stop
+                currentSectionIndex = 0;
+                index = 0;
+                // Optionally stop after one full cycle:
+                // stopAutoScroll();
+                // return;
+            }
+
+            const section = sections[index];
+            if (section) {
+                // Smooth scroll to section
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Update progress
+                updateProgress(index);
+                
+                // Schedule next section
+                currentSectionIndex = index;
+                const pauseTime = calculatePauseTime(section);
+                
+                if (autoScrollInterval) {
+                    clearTimeout(autoScrollInterval);
+                }
+                
+                autoScrollInterval = setTimeout(() => {
+                    if (autoScrollActive && !autoScrollPaused) {
+                        scrollToSection(index + 1);
+                    }
+                }, pauseTime);
+            }
+        }
+
+        function calculatePauseTime(section) {
+            // Calculate pause time based on content length
+            const contentHeight = section.offsetHeight;
+            const minTime = 4000; // 4 seconds minimum (more content in this page)
+            const maxTime = 10000; // 10 seconds maximum
+            
+            // More content = longer pause
+            const calculatedTime = Math.min(maxTime, minTime + (contentHeight / 80));
+            return calculatedTime;
+        }
+
+        function updateProgress(index) {
+            const progressFill = document.getElementById('autoScrollProgress');
+            if (progressFill && sections.length > 0) {
+                const progress = ((index + 1) / sections.length) * 100;
+                progressFill.style.width = progress + '%';
+            }
+        }
+
+        function pauseAutoScroll() {
+            if (!autoScrollActive) return;
+            
+            autoScrollPaused = !autoScrollPaused;
+            
+            const btn = document.querySelector('.auto-scroll-indicator .control-btn');
+            if (btn) {
+                btn.textContent = autoScrollPaused ? '▶️ استئناف' : '⏸️ إيقاف مؤقت';
+            }
+
+            if (!autoScrollPaused && autoScrollActive) {
+                // Resume scrolling
+                scrollToSection(currentSectionIndex + 1);
+            } else if (autoScrollInterval) {
+                clearTimeout(autoScrollInterval);
+            }
+        }
+
+        function stopAutoScroll() {
+            autoScrollActive = false;
+            autoScrollPaused = false;
+
+            if (autoScrollInterval) {
+                clearTimeout(autoScrollInterval);
+                autoScrollInterval = null;
+            }
+
+            // Update UI
+            const btn = document.querySelector('.auto-scroll-btn');
+            const icon = document.getElementById('autoScrollIcon');
+            const text = document.getElementById('autoScrollText');
+            const indicator = document.getElementById('autoScrollIndicator');
+
+            if (btn) btn.classList.remove('active');
+            if (icon) icon.textContent = '▶️';
+            if (text) text.textContent = 'تشغيل العرض التلقائي';
+            if (indicator) indicator.classList.remove('active');
+
+            // Reset progress
+            const progressFill = document.getElementById('autoScrollProgress');
+            if (progressFill) progressFill.style.width = '0%';
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (autoScrollActive) {
+                if (e.key === ' ' || e.key === 'Spacebar') {
+                    e.preventDefault();
+                    pauseAutoScroll();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    stopAutoScroll();
+                }
+            }
+        });
+
+        // Stop auto-scroll on manual scroll
+        let scrollTimeout;
+        window.addEventListener('wheel', () => {
+            if (autoScrollActive && !autoScrollPaused) {
+                // User is manually scrolling, pause auto-scroll temporarily
+                autoScrollPaused = true;
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    if (autoScrollActive) {
+                        autoScrollPaused = false;
+                        scrollToSection(currentSectionIndex + 1);
+                    }
+                }, 2000);
+            }
+        }, { passive: true });
     </script>
 </body>
 </html>
