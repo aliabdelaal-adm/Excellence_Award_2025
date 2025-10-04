@@ -1,1 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع التميز - منصة تطوير الحلول السحابية الذكية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --accent-color: #06b6d4;
+            --dark-bg: #0f172a;
+            --light-bg: #1e293b;
+            --text-light: #f1f5f9;
+            --text-gray: #94a3b8;
+            --success-color: #10b981;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-bg);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 4rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            top: -100px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--gradient-2);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            bottom: -100px;
+            left: -100px;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--gradient-3);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--accent-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section */
+        section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: var(--gradient-3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+
+        .feature-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--light-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card .project-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card .project-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .project-card:hover .project-image::before {
+            transform: translateX(100%);
+        }
+
+        .project-card .project-content {
+            padding: 2rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .project-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            padding: 0.3rem 0.8rem;
+            background: rgba(79, 172, 254, 0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+        }
+
+        /* Upload Section */
+        .upload-section {
+            background: var(--light-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 2px dashed var(--accent-color);
+            text-align: center;
+            transition: all 0.3s;
+            margin: 3rem auto;
+            max-width: 800px;
+        }
+
+        .upload-section:hover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .upload-section .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-list {
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .file-item {
+            background: var(--dark-bg);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-item .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Media Display */
+        .media-display {
+            background: var(--light-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 3rem auto;
+            max-width: 1000px;
+        }
+
+        .media-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background: var(--dark-bg);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .media-container iframe,
+        .media-container video,
+        .media-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Technologies */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tech-item:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-color);
+        }
+
+        .tech-item .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Achievements */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .achievement-card {
+            background: var(--light-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--success-color);
+        }
+
+        .achievement-card .number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-card .label {
+            color: var(--text-gray);
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: var(--light-bg);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--light-bg);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        footer .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        footer .social-links a {
+            color: var(--text-light);
+            font-size: 2rem;
+            transition: all 0.3s;
+        }
+
+        footer .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* URL Input */
+        .url-input-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .url-input-group input {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .url-input-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">🚀 مشروع التميز</div>
+            <ul>
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#about">نبذة</a></li>
+                <li><a href="#projects">المشاريع</a></li>
+                <li><a href="#upload">رفع الملفات</a></li>
+                <li><a href="#contact">تواصل</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>منصة تطوير الحلول السحابية الذكية</h1>
+            <p class="tagline">نحول أفكارك إلى واقع رقمي متقدم باستخدام الذكاء الاصطناعي</p>
+            <p>
+                نحن متخصصون في تطوير حلول برمجية ذكية تعتمد على الذكاء الاصطناعي والحوسبة السحابية
+                لتحويل العمليات المؤسسية التقليدية إلى منصات رقمية متقدمة وفعالة
+            </p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">استكشف المشاريع</a>
+                <a href="#upload" class="btn btn-secondary">رفع أعمالك</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">لماذا نحن الخيار الأمثل؟</h2>
+            <p class="section-subtitle">
+                نقدم حلولاً مبتكرة تتجاوز التطبيقات التقليدية مثل Word و Excel و PowerPoint
+                إلى عالم البرمجة الذكية والتقارير التفاعلية المتقدمة
+            </p>
+            <div class="about-grid">
+                <div class="feature-card">
+                    <div class="icon">🤖</div>
+                    <h3>الذكاء الاصطناعي</h3>
+                    <p>نستخدم أحدث تقنيات الذكاء الاصطناعي لأتمتة العمليات وتحليل البيانات بذكاء</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">☁️</div>
+                    <h3>الحلول السحابية</h3>
+                    <p>منصات سحابية متقدمة يمكن الوصول إليها من أي مكان وفي أي وقت</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>تقارير تفاعلية</h3>
+                    <p>تقارير مؤسسية ديناميكية بتقنية HTML و JavaScript بدلاً من الملفات الثابتة</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h3>سرعة وكفاءة</h3>
+                    <p>حلول مبرمجة تعمل بسرعة فائقة وتوفر الوقت والجهد</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🎨</div>
+                    <h3>تصميم احترافي</h3>
+                    <p>واجهات مستخدم عصرية وجذابة مصممة بأحدث معايير UX/UI</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🔒</div>
+                    <h3>أمان وموثوقية</h3>
+                    <p>أعلى معايير الأمان لحماية بياناتك وضمان استمرارية العمل</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">مشاريعنا المميزة</h2>
+            <p class="section-subtitle">
+                مجموعة من المشاريع التي توضح خبرتنا في تطوير الحلول الذكية
+            </p>
+            <div class="projects-grid" id="projectsContainer">
+                <!-- Projects will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section id="technologies">
+        <div class="container">
+            <h2 class="section-title">التقنيات المستخدمة</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="icon">🌐</div>
+                    <h4>HTML5/CSS3</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">⚙️</div>
+                    <h4>JavaScript</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">🐍</div>
+                    <h4>Python</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">🔥</div>
+                    <h4>Node.js</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">☁️</div>
+                    <h4>Cloud APIs</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="icon">🤖</div>
+                    <h4>AI/ML</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section id="upload">
+        <div class="container">
+            <h2 class="section-title">رفع وعرض الأعمال</h2>
+            <p class="section-subtitle">
+                قم برفع ملفاتك أو أدخل رابط خارجي لعرض أعمالك بطريقة احترافية
+            </p>
+            
+            <!-- File Upload -->
+            <div class="upload-section" onclick="document.getElementById('fileInput').click()">
+                <div class="icon">📁</div>
+                <h3>اسحب وأفلت الملفات هنا</h3>
+                <p>أو انقر لاختيار الملفات</p>
+                <p style="color: var(--text-gray); font-size: 0.9rem; margin-top: 1rem;">
+                    يدعم: الصور، الفيديوهات، المستندات، وملفات PDF
+                </p>
+                <input type="file" id="fileInput" multiple accept="image/*,video/*,.pdf,.doc,.docx">
+            </div>
+
+            <!-- URL Input -->
+            <div class="upload-section">
+                <div class="icon">🔗</div>
+                <h3>أو أدخل رابط خارجي</h3>
+                <div class="url-input-group">
+                    <input type="url" id="urlInput" placeholder="https://example.com/video.mp4">
+                    <button class="btn btn-primary" onclick="loadFromURL()">تحميل</button>
+                </div>
+            </div>
+
+            <!-- File List -->
+            <div id="fileList" class="file-list"></div>
+
+            <!-- Media Display -->
+            <div id="mediaDisplay" class="media-display" style="display: none;">
+                <h3 style="margin-bottom: 1.5rem;">معاينة الملف</h3>
+                <div class="media-container" id="mediaContainer">
+                    <!-- Media will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements">
+        <div class="container">
+            <h2 class="section-title">إنجازاتنا</h2>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="number">50+</div>
+                    <div class="label">مشروع ناجح</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="number">100%</div>
+                    <div class="label">رضا العملاء</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="number">5+</div>
+                    <div class="label">سنوات خبرة</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="number">24/7</div>
+                    <div class="label">دعم فني</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">تواصل معنا</h2>
+            <p class="section-subtitle">
+                لديك مشروع في ذهنك؟ دعنا نساعدك في تحويله إلى واقع
+            </p>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="name">الاسم</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">الرسالة</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">إرسال</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#" title="GitHub">💻</a>
+                <a href="#" title="LinkedIn">🔗</a>
+                <a href="#" title="Twitter">🐦</a>
+                <a href="#" title="Email">📧</a>
+            </div>
+            <p>&copy; 2024 مشروع التميز - منصة تطوير الحلول السحابية الذكية</p>
+            <p style="color: var(--text-gray); margin-top: 1rem;">
+                تم التطوير باستخدام HTML5, CSS3, JavaScript - بدون اعتماد على Word أو Excel أو PowerPoint
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Load projects data
+        async function loadProjects() {
+            try {
+                const response = await fetch('plan-data.json');
+                const data = await response.json();
+                displayProjects(data.projects || getDefaultProjects());
+            } catch (error) {
+                console.log('Loading default projects');
+                displayProjects(getDefaultProjects());
+            }
+        }
+
+        function getDefaultProjects() {
+            return [
+                {
+                    title: "نظام إدارة التقارير الذكي",
+                    description: "منصة متكاملة لإنشاء وإدارة التقارير المؤسسية باستخدام HTML و JavaScript بدلاً من Excel و Word",
+                    icon: "📊",
+                    tags: ["HTML", "JavaScript", "Python", "AI"]
+                },
+                {
+                    title: "منصة التحليلات التفاعلية",
+                    description: "لوحات تحكم تفاعلية في الوقت الفعلي مع تحليل البيانات بالذكاء الاصطناعي",
+                    icon: "📈",
+                    tags: ["Data Analytics", "Cloud", "Real-time"]
+                },
+                {
+                    title: "نظام إدارة المشاريع السحابي",
+                    description: "تتبع وإدارة المشاريع بشكل كامل عبر السحابة مع تكامل API",
+                    icon: "🚀",
+                    tags: ["Cloud", "API", "Project Management"]
+                },
+                {
+                    title: "مولد المستندات التلقائي",
+                    description: "أتمتة إنشاء المستندات والتقارير باستخدام القوالب الذكية والذكاء الاصطناعي",
+                    icon: "📝",
+                    tags: ["Automation", "AI", "Templates"]
+                },
+                {
+                    title: "نظام الأرشفة الإلكترونية",
+                    description: "حلول أرشفة ذكية مع بحث متقدم وتنظيم تلقائي باستخدام تقنيات ML",
+                    icon: "📚",
+                    tags: ["ML", "Search", "Organization"]
+                },
+                {
+                    title: "منصة العروض التفاعلية",
+                    description: "بديل ذكي لـ PowerPoint - عروض تقديمية تفاعلية بتقنية الويب الحديثة",
+                    icon: "🎯",
+                    tags: ["Web", "Interactive", "Presentations"]
+                }
+            ];
+        }
+
+        function displayProjects(projects) {
+            const container = document.getElementById('projectsContainer');
+            container.innerHTML = projects.map(project => `
+                <div class="project-card">
+                    <div class="project-image">${project.icon}</div>
+                    <div class="project-content">
+                        <h3>${project.title}</h3>
+                        <p>${project.description}</p>
+                        <div class="tags">
+                            ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // File Upload Handling
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const mediaDisplay = document.getElementById('mediaDisplay');
+        const mediaContainer = document.getElementById('mediaContainer');
+        const uploadedFiles = [];
+
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                uploadedFiles.push(file);
+                addFileToList(file);
+            });
+        }
+
+        function addFileToList(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div>
+                    <strong>${file.name}</strong>
+                    <small style="color: var(--text-gray); margin-right: 1rem;">
+                        ${(file.size / 1024).toFixed(2)} KB
+                    </small>
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-small" onclick="previewFile('${file.name}')">عرض</button>
+                    <button class="btn btn-secondary btn-small" onclick="downloadFile('${file.name}')" style="margin-right: 0.5rem;">تحميل</button>
+                </div>
+            `;
+            fileList.appendChild(fileItem);
+        }
+
+        function previewFile(fileName) {
+            const file = uploadedFiles.find(f => f.name === fileName);
+            if (!file) return;
+
+            mediaDisplay.style.display = 'block';
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const fileType = file.type.split('/')[0];
+                let content = '';
+
+                if (fileType === 'image') {
+                    content = `<img src="${e.target.result}" alt="${file.name}">`;
+                } else if (fileType === 'video') {
+                    content = `<video controls><source src="${e.target.result}" type="${file.type}"></video>`;
+                } else if (file.type === 'application/pdf') {
+                    content = `<iframe src="${e.target.result}"></iframe>`;
+                } else {
+                    content = `<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-gray);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">📄</div>
+                            <h3>${file.name}</h3>
+                            <p>لا يمكن عرض هذا النوع من الملفات</p>
+                        </div>
+                    </div>`;
+                }
+
+                mediaContainer.innerHTML = content;
+                mediaContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function downloadFile(fileName) {
+            const file = uploadedFiles.find(f => f.name === fileName);
+            if (!file) return;
+
+            const url = URL.createObjectURL(file);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function loadFromURL() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) {
+                alert('الرجاء إدخال رابط صحيح');
+                return;
+            }
+
+            mediaDisplay.style.display = 'block';
+            
+            // Detect type from URL
+            const urlLower = url.toLowerCase();
+            let content = '';
+
+            if (urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+                content = `<img src="${url}" alt="External Image">`;
+            } else if (urlLower.match(/\.(mp4|webm|ogg)$/)) {
+                content = `<video controls><source src="${url}"></video>`;
+            } else if (urlLower.includes('youtube.com') || urlLower.includes('youtu.be')) {
+                const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/)?.[1];
+                if (videoId) {
+                    content = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
+                }
+            } else {
+                content = `<iframe src="${url}"></iframe>`;
+            }
+
+            mediaContainer.innerHTML = content;
+            mediaContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Form Submission
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('شكراً لتواصلك معنا! سنرد عليك في أقرب وقت.');
+            e.target.reset();
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Load projects on page load
+        document.addEventListener('DOMContentLoaded', loadProjects);
+
+        // Drag and Drop
+        const uploadSection = document.querySelector('.upload-section');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadSection.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadSection.addEventListener(eventName, () => {
+                uploadSection.style.borderColor = 'var(--primary-color)';
+                uploadSection.style.background = 'rgba(37, 99, 235, 0.2)';
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadSection.addEventListener(eventName, () => {
+                uploadSection.style.borderColor = 'var(--accent-color)';
+                uploadSection.style.background = 'var(--light-bg)';
+            });
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            Array.from(files).forEach(file => {
+                uploadedFiles.push(file);
+                addFileToList(file);
+            });
+        });
+    </script>
+</body>
+</html>

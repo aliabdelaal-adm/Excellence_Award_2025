@@ -1,0 +1,56 @@
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node modules (if added later)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python cache (if added later)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# Build output
+dist/
+build/
+*.egg-info/
+
+# Logs
+logs/
+*.log
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Test files
+test-uploads/
+uploads/
+
+# Backup files
+*.bak
+*.backup
