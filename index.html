@@ -1492,7 +1492,7 @@
         <!-- Note: Direct YouTube audio playback is not supported. 
              To use this feature, download the audio from the YouTube video and add it here.
              Example: <source src="sheikh-zayed-message.mp3" type="audio/mpeg"> -->
-        <source src="" type="audio/mpeg">
+        <source src="sheikh-zayed-message.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Authentication Modal -->
@@ -2130,7 +2130,7 @@
         const audioText = document.getElementById('audioText');
 
         function toggleWelcomeAudio() {
-            if (!welcomeAudio.src || welcomeAudio.src === window.location.href) {
+            if (!welcomeAudio.currentSrc) {
                 alert('⚠️ يرجى إضافة ملف الصوت أولاً.\n\nللاستخدام:\n1. قم بتحميل الصوت من فيديو اليوتيوب\n2. أضف الملف إلى المشروع\n3. حدّث مسار الملف في كود HTML');
                 return;
             }
@@ -2173,7 +2173,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Wait a moment before attempting autoplay
             setTimeout(() => {
-                if (welcomeAudio && welcomeAudio.src && welcomeAudio.src !== window.location.href) {
+                if (welcomeAudio && welcomeAudio.currentSrc) {
                     // Try to play automatically
                     welcomeAudio.play().then(() => {
                         audioPlaying = true;
