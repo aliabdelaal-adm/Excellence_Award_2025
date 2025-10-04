@@ -1,12 +1,12 @@
-# 🚀 مشروع التميز - منصة تطوير الحلول السحابية الذكية
+# 🚀 نحو التحول الذكي - منصة التميز الداخلي لبلدية أبوظبي
 
-## Excellence Award Project - Smart Cloud Solutions Platform
+## Smart Transformation for the Future - Abu Dhabi Municipality Internal Excellence Platform
 
 ### نظرة عامة | Overview
 
-مشروع متكامل يهدف للفوز بجائزة التميز من خلال تقديم منصة احترافية لتطوير الحلول البرمجية الذكية التي تعتمد على الذكاء الاصطناعي والحوسبة السحابية. المشروع يحول العمليات المؤسسية التقليدية (Word, Excel, PowerPoint) إلى حلول برمجية متقدمة مبنية على تقنيات الويب الحديثة.
+مشروع متكامل يهدف للفوز بتحدي التميز الداخلي في بلدية أبوظبي نحو تحول ذكي للمستقبل. المنصة تقدم حلولاً مبتكرة لتطوير الحلول البرمجية الذكية التي تعتمد على الذكاء الاصطناعي والحوسبة السحابية. المشروع يحول العمليات المؤسسية التقليدية (Word, Excel, PowerPoint) إلى حلول برمجية متقدمة مبنية على تقنيات الويب الحديثة.
 
-An integrated project aimed at winning the Excellence Award by providing a professional platform for developing smart software solutions based on artificial intelligence and cloud computing. The project transforms traditional institutional operations (Word, Excel, PowerPoint) into advanced software solutions built on modern web technologies.
+An integrated project aimed at winning the Internal Excellence Challenge in Abu Dhabi Municipality towards a smart transformation for the future. The platform provides innovative solutions for developing smart software solutions based on artificial intelligence and cloud computing. The project transforms traditional institutional operations into advanced software solutions built on modern web technologies.
 
 ---
 
@@ -37,6 +37,20 @@ An integrated project aimed at winning the Excellence Award by providing a profe
 - تحميل من روابط خارجية
 - معاينة الصور والفيديوهات والمستندات
 - دعم YouTube وروابط الويب
+
+### ✏️ نظام التحرير المتقدم | Advanced Editing System
+- محتوى قابل للتحرير من قبل المطور/المؤسس فقط
+- نظام مصادقة آمن للوصول إلى وضع التحرير
+- حفظ التعديلات محلياً في المتصفح
+- إمكانية تعديل جميع العناوين والنصوص
+- اختصار لوحة المفاتيح: Ctrl+Alt+E لتسجيل الدخول
+
+### 📂 ملف الإنجازات | Portfolio Section
+- عرض المشاريع والإنجازات كبطاقات احترافية
+- أيقونات ووصف لكل مشروع
+- روابط مباشرة للملفات والمشاريع
+- تصميم جذاب وتفاعلي
+- محفوظة ومحملة وجاهزة للعرض
 
 ---
 

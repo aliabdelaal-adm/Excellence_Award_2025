@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع التميز - منصة تطوير الحلول السحابية الذكية</title>
+    <title>نحو التحول الذكي - منصة التميز الداخلي لبلدية أبوظبي</title>
     <style>
         * {
             margin: 0;
@@ -446,37 +446,165 @@
             margin-bottom: 1rem;
         }
 
-        /* Achievements */
-        .achievements-grid {
+        /* Portfolio/Achievements */
+        .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
 
-        .achievement-card {
+        .portfolio-card {
             background: var(--light-bg);
             padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+
+        .portfolio-card .icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .portfolio-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .portfolio-card .goals {
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .portfolio-card .file-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 1rem;
             transition: all 0.3s;
         }
 
-        .achievement-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--success-color);
+        .portfolio-card .file-link:hover {
+            background: var(--accent-color);
+            transform: scale(1.05);
         }
 
-        .achievement-card .number {
-            font-size: 3rem;
+        /* Editable Content Styles */
+        .editable {
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .edit-mode .editable:hover {
+            outline: 2px dashed var(--accent-color);
+            outline-offset: 4px;
+            cursor: pointer;
+        }
+
+        .edit-mode .editable::after {
+            content: '✏️';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .edit-mode .editable:hover::after {
+            opacity: 1;
+        }
+
+        /* Admin Controls */
+        .admin-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .admin-controls.visible {
+            display: block;
+        }
+
+        .admin-btn {
+            padding: 1rem 1.5rem;
+            background: var(--gradient-1);
+            border: none;
+            border-radius: 50px;
+            color: white;
             font-weight: bold;
-            color: var(--success-color);
-            margin-bottom: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
         }
 
-        .achievement-card .label {
-            color: var(--text-gray);
+        .admin-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Auth Modal */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-modal-content {
+            background: var(--light-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .auth-modal h2 {
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .auth-modal input {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .auth-modal button {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         /* Contact Section */
@@ -608,12 +736,13 @@
     <!-- Navigation -->
     <nav>
         <div class="container">
-            <div class="logo">🚀 مشروع التميز</div>
+            <div class="logo">🚀 نحو التحول الذكي</div>
             <ul>
                 <li><a href="#home">الرئيسية</a></li>
                 <li><a href="#about">نبذة</a></li>
                 <li><a href="#projects">المشاريع</a></li>
                 <li><a href="#upload">رفع الملفات</a></li>
+                <li><a href="#achievements">ملف الإنجازات</a></li>
                 <li><a href="#contact">تواصل</a></li>
             </ul>
         </div>
@@ -622,11 +751,11 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>منصة تطوير الحلول السحابية الذكية</h1>
-            <p class="tagline">نحول أفكارك إلى واقع رقمي متقدم باستخدام الذكاء الاصطناعي</p>
-            <p>
-                نحن متخصصون في تطوير حلول برمجية ذكية تعتمد على الذكاء الاصطناعي والحوسبة السحابية
-                لتحويل العمليات المؤسسية التقليدية إلى منصات رقمية متقدمة وفعالة
+            <h1 class="editable" data-field="hero-title">نحو التحول الذكي للمستقبل</h1>
+            <p class="tagline editable" data-field="hero-tagline">تحدي التميز الداخلي - بلدية أبوظبي</p>
+            <p class="editable" data-field="hero-description">
+                منصة مبتكرة لتطوير الحلول الذكية داخل بلدية أبوظبي، نحول العمليات التقليدية إلى تطبيقات رقمية متقدمة
+                باستخدام الذكاء الاصطناعي والحوسبة السحابية لتحقيق التحول الذكي نحو مستقبل أفضل
             </p>
             <div class="cta-buttons">
                 <a href="#projects" class="btn btn-primary">استكشف المشاريع</a>
@@ -638,41 +767,41 @@
     <!-- About Section -->
     <section id="about">
         <div class="container">
-            <h2 class="section-title">لماذا نحن الخيار الأمثل؟</h2>
-            <p class="section-subtitle">
-                نقدم حلولاً مبتكرة تتجاوز التطبيقات التقليدية مثل Word و Excel و PowerPoint
+            <h2 class="section-title editable" data-field="about-title">لماذا أنا الخيار الأمثل؟</h2>
+            <p class="section-subtitle editable" data-field="about-subtitle">
+                أقدم حلولاً مبتكرة تتجاوز التطبيقات التقليدية مثل Word و Excel و PowerPoint
                 إلى عالم البرمجة الذكية والتقارير التفاعلية المتقدمة
             </p>
             <div class="about-grid">
                 <div class="feature-card">
                     <div class="icon">🤖</div>
                     <h3>الذكاء الاصطناعي</h3>
-                    <p>نستخدم أحدث تقنيات الذكاء الاصطناعي لأتمتة العمليات وتحليل البيانات بذكاء</p>
+                    <p>أستخدم أحدث تقنيات الذكاء الاصطناعي لأتمتة العمليات وتحليل البيانات بذكاء</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">☁️</div>
                     <h3>الحلول السحابية</h3>
-                    <p>منصات سحابية متقدمة يمكن الوصول إليها من أي مكان وفي أي وقت</p>
+                    <p>أطور منصات سحابية متقدمة يمكن الوصول إليها من أي مكان وفي أي وقت</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">📊</div>
                     <h3>تقارير تفاعلية</h3>
-                    <p>تقارير مؤسسية ديناميكية بتقنية HTML و JavaScript بدلاً من الملفات الثابتة</p>
+                    <p>أصمم تقارير مؤسسية ديناميكية بتقنية HTML و JavaScript بدلاً من الملفات الثابتة</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">⚡</div>
                     <h3>سرعة وكفاءة</h3>
-                    <p>حلول مبرمجة تعمل بسرعة فائقة وتوفر الوقت والجهد</p>
+                    <p>أقدم حلول مبرمجة تعمل بسرعة فائقة وتوفر الوقت والجهد</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🎨</div>
                     <h3>تصميم احترافي</h3>
-                    <p>واجهات مستخدم عصرية وجذابة مصممة بأحدث معايير UX/UI</p>
+                    <p>أصمم واجهات مستخدم عصرية وجذابة بأحدث معايير UX/UI</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🔒</div>
                     <h3>أمان وموثوقية</h3>
-                    <p>أعلى معايير الأمان لحماية بياناتك وضمان استمرارية العمل</p>
+                    <p>ألتزم بأعلى معايير الأمان لحماية بياناتك وضمان استمرارية العمل</p>
                 </div>
             </div>
         </div>
@@ -766,27 +895,15 @@
         </div>
     </section>
 
-    <!-- Achievements Section -->
+    <!-- Portfolio/Achievements Section -->
     <section id="achievements">
         <div class="container">
-            <h2 class="section-title">إنجازاتنا</h2>
-            <div class="achievements-grid">
-                <div class="achievement-card">
-                    <div class="number">50+</div>
-                    <div class="label">مشروع ناجح</div>
-                </div>
-                <div class="achievement-card">
-                    <div class="number">100%</div>
-                    <div class="label">رضا العملاء</div>
-                </div>
-                <div class="achievement-card">
-                    <div class="number">5+</div>
-                    <div class="label">سنوات خبرة</div>
-                </div>
-                <div class="achievement-card">
-                    <div class="number">24/7</div>
-                    <div class="label">دعم فني</div>
-                </div>
+            <h2 class="section-title editable" data-field="achievements-title">ملف إنجازاتي</h2>
+            <p class="section-subtitle editable" data-field="achievements-subtitle">
+                مجموعة من المشاريع والأعمال المحفوظة والجاهزة للعرض
+            </p>
+            <div class="portfolio-grid" id="portfolioContainer">
+                <!-- Portfolio items will be loaded dynamically -->
             </div>
         </div>
     </section>
@@ -825,12 +942,30 @@
                 <a href="#" title="Twitter">🐦</a>
                 <a href="#" title="Email">📧</a>
             </div>
-            <p>&copy; 2024 مشروع التميز - منصة تطوير الحلول السحابية الذكية</p>
+            <p class="editable" data-field="footer-text">&copy; 2024 نحو التحول الذكي - منصة التميز الداخلي لبلدية أبوظبي</p>
             <p style="color: var(--text-gray); margin-top: 1rem;">
                 تم التطوير باستخدام HTML5, CSS3, JavaScript - بدون اعتماد على Word أو Excel أو PowerPoint
             </p>
         </div>
     </footer>
+
+    <!-- Admin Controls -->
+    <div class="admin-controls">
+        <button class="admin-btn" onclick="toggleEditMode()">✏️ تعديل المحتوى</button>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <h2>تسجيل دخول المطور</h2>
+            <p style="color: var(--text-gray); margin-bottom: 1.5rem;">
+                الوصول محصور للمطور/المؤسس فقط
+            </p>
+            <input type="password" id="adminPassword" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter') authenticateAdmin()">
+            <button class="btn btn-primary" onclick="authenticateAdmin()">دخول</button>
+            <button class="btn btn-secondary" onclick="hideAuthModal()">إلغاء</button>
+        </div>
+    </div>
 
     <script>
         // Load projects data
@@ -1033,8 +1168,143 @@
             });
         });
 
-        // Load projects on page load
-        document.addEventListener('DOMContentLoaded', loadProjects);
+        // Load Portfolio
+        async function loadPortfolio() {
+            try {
+                const response = await fetch('plan-data.json');
+                const data = await response.json();
+                displayPortfolio(data.portfolio || []);
+                // Load saved editable content
+                loadEditableContent();
+            } catch (error) {
+                console.log('Error loading portfolio:', error);
+                displayPortfolio([]);
+            }
+        }
+
+        function displayPortfolio(portfolioItems) {
+            const container = document.getElementById('portfolioContainer');
+            if (!container) return;
+            
+            container.innerHTML = portfolioItems.map(item => `
+                <div class="portfolio-card">
+                    <span class="icon">${item.icon}</span>
+                    <h3>${item.title}</h3>
+                    <p class="goals">${item.goals}</p>
+                    <a href="${item.fileUrl}" class="file-link" target="_blank">
+                        عرض المشروع 🔗
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // Editable Content System
+        let isEditMode = false;
+        let isAuthenticated = false;
+        const ADMIN_PASSWORD = 'admin2024'; // Change this to your secure password
+
+        function toggleEditMode() {
+            if (!isAuthenticated) {
+                showAuthModal();
+                return;
+            }
+            
+            isEditMode = !isEditMode;
+            document.body.classList.toggle('edit-mode', isEditMode);
+            
+            const btn = document.querySelector('.admin-btn');
+            if (btn) {
+                btn.textContent = isEditMode ? '💾 حفظ التعديلات' : '✏️ تعديل المحتوى';
+            }
+            
+            if (isEditMode) {
+                activateEditableElements();
+            } else {
+                saveEditableContent();
+            }
+        }
+
+        function activateEditableElements() {
+            document.querySelectorAll('.editable').forEach(el => {
+                el.addEventListener('click', handleEditClick);
+            });
+        }
+
+        function handleEditClick(e) {
+            if (!isEditMode) return;
+            
+            e.stopPropagation();
+            const element = e.currentTarget;
+            const field = element.dataset.field;
+            const currentValue = element.textContent;
+            
+            const newValue = prompt('تعديل المحتوى:', currentValue);
+            if (newValue && newValue !== currentValue) {
+                element.textContent = newValue;
+                saveToLocalStorage(field, newValue);
+            }
+        }
+
+        function saveToLocalStorage(field, value) {
+            const content = JSON.parse(localStorage.getItem('editableContent') || '{}');
+            content[field] = value;
+            localStorage.setItem('editableContent', JSON.stringify(content));
+        }
+
+        function loadEditableContent() {
+            const content = JSON.parse(localStorage.getItem('editableContent') || '{}');
+            Object.keys(content).forEach(field => {
+                const element = document.querySelector(`[data-field="${field}"]`);
+                if (element) {
+                    element.textContent = content[field];
+                }
+            });
+        }
+
+        function saveEditableContent() {
+            alert('تم حفظ التعديلات بنجاح! ✅');
+        }
+
+        function showAuthModal() {
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function hideAuthModal() {
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        function authenticateAdmin() {
+            const passwordInput = document.getElementById('adminPassword');
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                isAuthenticated = true;
+                hideAuthModal();
+                document.querySelector('.admin-controls').classList.add('visible');
+                alert('تم تسجيل الدخول بنجاح! ✅');
+                toggleEditMode();
+            } else {
+                alert('كلمة المرور غير صحيحة! ❌');
+            }
+            passwordInput.value = '';
+        }
+
+        // Keyboard shortcut for admin login (Ctrl+Alt+E)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey && e.key === 'e') {
+                showAuthModal();
+            }
+        });
+
+        // Load projects and portfolio on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProjects();
+            loadPortfolio();
+        });
 
         // Drag and Drop
         const uploadSection = document.querySelector('.upload-section');
