@@ -131,6 +131,10 @@ An integrated project presented for the Excellence Award by developing a profess
 
 **التقنيات:** HTML5, CSS3, JavaScript, Reveal.js, Three.js
 
+**مثال تطبيقي:** نظام إدارة خطة التفتيش الشهرية (awa_reports_2025) - نظام تفاعلي متكامل لإدارة خطط التفتيش مع إمكانية رفع البيانات من Excel وتصدير التقارير بصيغات PDF و Excel و PowerPoint.
+
+**[📄 عرض المشروع](https://github.com/aliabdelaal-adm/awa_reports_2025)** | **[🌐 زيارة الموقع المباشر](https://aliabdelaal-adm.github.io/awa_reports_2025/)**
+
 ---
 
 ## 🔐 وضع التحرير للمطور | Developer Edit Mode
