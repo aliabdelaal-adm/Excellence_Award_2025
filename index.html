@@ -983,26 +983,11 @@
         }
 
         .auto-scroll-indicator {
-            position: fixed;
-            top: 50%;
-            right: 2rem;
-            transform: translateY(-50%);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 2px solid var(--accent-color);
-            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
-            z-index: 999;
+            display: none !important;
         }
 
         .auto-scroll-indicator.active {
-            display: flex;
-            animation: slideInRight 0.5s ease-out;
+            display: none !important;
         }
 
         @keyframes slideInRight {
@@ -2346,10 +2331,6 @@
             
             autoScrollActive = true;
 
-            // Update UI
-            const indicator = document.getElementById('autoScrollIndicator');
-            if (indicator) indicator.classList.add('active');
-
             // Start continuous scrolling
             function scroll() {
                 if (autoScrollActive) {
@@ -2380,10 +2361,6 @@
                 cancelAnimationFrame(autoScrollInterval);
                 autoScrollInterval = null;
             }
-
-            // Update UI
-            const indicator = document.getElementById('autoScrollIndicator');
-            if (indicator) indicator.classList.remove('active');
         }
 
         function pauseContinuousScroll() {
