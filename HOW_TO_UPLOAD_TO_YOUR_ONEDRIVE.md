@@ -200,6 +200,9 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### للشرح التفصيلي:
 📖 [ONEDRIVE_UPLOAD_INSTRUCTIONS.md](ONEDRIVE_UPLOAD_INSTRUCTIONS.md)
 
+### لمستخدمي Mac/Linux:
+📖 [CROSS_PLATFORM_UPLOAD_GUIDE.md](CROSS_PLATFORM_UPLOAD_GUIDE.md) - **جديد!**
+
 ### للمزامنة اليدوية:
 📖 [ONEDRIVE_GUIDE.md](ONEDRIVE_GUIDE.md)
 

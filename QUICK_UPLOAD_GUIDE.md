@@ -94,4 +94,11 @@ cd "C:\Users\ali.abdelaal\OneDrive - adm\Documents\Excellence_Award_2025"
 
 ---
 
+## 🌐 مستخدمي Mac/Linux | Mac/Linux Users
+
+راجع الدليل الكامل لجميع المنصات:
+📖 [CROSS_PLATFORM_UPLOAD_GUIDE.md](CROSS_PLATFORM_UPLOAD_GUIDE.md)
+
+---
+
 **أي أسئلة؟** راجع [الدليل المفصل](ONEDRIVE_UPLOAD_INSTRUCTIONS.md) 📖
