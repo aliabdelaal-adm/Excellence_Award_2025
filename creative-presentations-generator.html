@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد العروض الإبداعية - مشروع ذكي متكامل</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --gold-color: #fbbf24;
+            --dark-bg: #0f172a;
+            --light-bg: #1e293b;
+            --card-bg: #334155;
+            --text-light: #f1f5f9;
+            --text-gray: #94a3b8;
+            --border-color: #475569;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--gold-color);
+            padding: 3rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #ef4444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+        }
+
+        .header .subtitle {
+            color: var(--gold-color);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            padding: 0.75rem 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .quick-link:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--gold-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-icon {
+            font-size: 3rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--gold-color);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: var(--gold-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-content {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .card-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-content ul li {
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            background: rgba(37, 99, 235, 0.1);
+            border-right: 4px solid var(--primary-color);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .card-content ul li:hover {
+            background: rgba(37, 99, 235, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--success-color);
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--gold-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-desc {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .analysis-section {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--primary-color);
+        }
+
+        .analysis-title {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-content {
+            color: var(--text-light);
+            line-height: 1.9;
+        }
+
+        .analysis-content p {
+            margin-bottom: 1rem;
+        }
+
+        .key-points {
+            background: rgba(251, 191, 36, 0.1);
+            border-right: 4px solid var(--gold-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .key-points h4 {
+            color: var(--gold-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .key-points ul li {
+            padding: 0.5rem 0;
+            color: var(--text-light);
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+        }
+
+        .key-points ul li:before {
+            content: "✓";
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>🎨 مولد العروض الإبداعية</h1>
+            <p class="subtitle">مشروع ذكي متكامل الأركان</p>
+            <p>تحليل ذكي إبداعي للفيديوهات التعليمية مع استخراج النتائج والمخرجات بشكل متكامل</p>
+            <div class="quick-links">
+                <a href="index.html" class="quick-link">🏠 الرئيسية</a>
+                <a href="excellence-department-project.html" class="quick-link">🏆 مشروع التميز</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Executive Summary -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📋</span>
+                نظرة عامة على المشروع
+            </h2>
+            <div class="highlight-box">
+                <p style="font-size: 1.2rem; line-height: 2;">
+                    <strong>مولد العروض الإبداعية</strong> هو مشروع ذكي متكامل يهدف إلى تحليل وعرض محتوى الفيديوهات التعليمية بطريقة احترافية وذكية. يتضمن المشروع تضمين فيديوهات YouTube مباشرة مع تقديم تحليل ذكي شامل لكل فيديو، استخراج النقاط الرئيسية، والمخرجات المتوقعة، مما يوفر تجربة تعليمية متكاملة ومبتكرة.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <div class="metric-card">
+                    <div class="metric-value">2</div>
+                    <div class="metric-label">فيديوهات تعليمية</div>
+                    <div class="metric-desc">محتوى YouTube مباشر</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">تحليل ذكي</div>
+                    <div class="metric-desc">AI-powered Analysis</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">متكامل</div>
+                    <div class="metric-label">مشروع ذكي</div>
+                    <div class="metric-desc">Full Stack Solution</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 1 Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🎥</span>
+                الفيديو الأول: تقنيات العروض التقديمية المتقدمة
+            </h2>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/b65Mui9RE-Q?rel=0" 
+                    title="الفيديو الأول - تقنيات العروض التقديمية"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <!-- Video 1 Analysis -->
+            <div class="analysis-section">
+                <h3 class="analysis-title">🔍 التحليل الذكي والشرح الإبداعي</h3>
+                <div class="analysis-content">
+                    <p>
+                        يقدم هذا الفيديو محتوى تعليمي قيّم حول تقنيات إنشاء وتطوير العروض التقديمية الاحترافية. يتناول الفيديو أساسيات التصميم الحديث، وكيفية استخدام الأدوات الرقمية المتقدمة لإنشاء عروض تفاعلية جذابة تلفت انتباه الجمهور وتوصل الرسالة بفعالية.
+                    </p>
+                    
+                    <div class="key-points">
+                        <h4>📌 النقاط الرئيسية المستخلصة:</h4>
+                        <ul>
+                            <li>أهمية التصميم البصري في العروض التقديمية الحديثة</li>
+                            <li>استخدام الألوان والخطوط بشكل احترافي لتعزيز الرسالة</li>
+                            <li>تقنيات السرد القصصي (Storytelling) في العروض</li>
+                            <li>دمج الوسائط المتعددة (صور، فيديوهات، رسوم متحركة)</li>
+                            <li>أفضل الممارسات لجذب انتباه الجمهور والحفاظ عليه</li>
+                            <li>استخدام البيانات والإحصائيات بطريقة مرئية جذابة</li>
+                            <li>تقنيات التفاعل مع الجمهور أثناء العرض</li>
+                        </ul>
+                    </div>
+
+                    <p>
+                        <strong>التطبيقات العملية:</strong> يمكن تطبيق هذه المفاهيم في مجالات متعددة مثل العروض التعليمية، العروض التجارية، التقارير المؤسسية، والعروض التسويقية. المحتوى يركز على كيفية تحويل المعلومات المعقدة إلى عروض سهلة الفهم وممتعة للمشاهدة.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Video 1 Outputs -->
+            <div class="card">
+                <div class="card-title">📊 المخرجات والنتائج</div>
+                <div class="card-content">
+                    <div class="grid-2">
+                        <div>
+                            <h4 style="color: var(--accent-color); margin-bottom: 1rem;">✅ المهارات المكتسبة</h4>
+                            <ul>
+                                <li>إتقان تصميم الشرائح الاحترافية</li>
+                                <li>فهم سيكولوجية الألوان والتصميم</li>
+                                <li>القدرة على بناء سرد قصصي فعال</li>
+                                <li>استخدام الأدوات الرقمية الحديثة</li>
+                                <li>تحسين مهارات التواصل البصري</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--success-color); margin-bottom: 1rem;">🎯 الفوائد المتوقعة</h4>
+                            <ul>
+                                <li>زيادة تأثير العروض التقديمية بنسبة 80%</li>
+                                <li>تحسين معدل استيعاب المعلومات للجمهور</li>
+                                <li>توفير الوقت في إعداد العروض</li>
+                                <li>تعزيز الصورة المهنية والاحترافية</li>
+                                <li>القدرة على التميز في بيئة العمل</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video 2 Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🎥</span>
+                الفيديو الثاني: أدوات وتقنيات العروض الذكية
+            </h2>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/YppLA1G-HfA?rel=0" 
+                    title="الفيديو الثاني - أدوات وتقنيات العروض الذكية"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <!-- Video 2 Analysis -->
+            <div class="analysis-section">
+                <h3 class="analysis-title">🔍 التحليل الذكي والشرح الإبداعي</h3>
+                <div class="analysis-content">
+                    <p>
+                        يستعرض الفيديو الثاني مجموعة من الأدوات والتقنيات المتقدمة المستخدمة في إنشاء العروض التقديمية الذكية. يركز المحتوى على الحلول التقنية الحديثة التي تعتمد على الذكاء الاصطناعي والأتمتة لتسهيل عملية إنشاء عروض احترافية بأقل جهد وأعلى جودة.
+                    </p>
+                    
+                    <div class="key-points">
+                        <h4>📌 النقاط الرئيسية المستخلصة:</h4>
+                        <ul>
+                            <li>استخدام منصات العروض السحابية والتعاون الجماعي</li>
+                            <li>تطبيقات الذكاء الاصطناعي في توليد المحتوى التلقائي</li>
+                            <li>أدوات التصميم الذكية وقوالب العروض الجاهزة</li>
+                            <li>تقنيات الواقع المعزز والافتراضي في العروض</li>
+                            <li>دمج البيانات الحية والمحتوى الديناميكي</li>
+                            <li>أدوات التحليل والقياس لفعالية العروض</li>
+                            <li>الحلول المتكاملة للعروض التفاعلية عبر الإنترنت</li>
+                        </ul>
+                    </div>
+
+                    <p>
+                        <strong>الابتكار والتميز:</strong> يسلط الفيديو الضوء على كيفية استخدام التكنولوجيا الحديثة لإنشاء عروض تقديمية تفاعلية تتجاوز القيود التقليدية لبرامج مثل PowerPoint. التركيز على الحلول المبنية على الويب والتي توفر مرونة أكبر وإمكانيات تفاعلية متقدمة.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Video 2 Outputs -->
+            <div class="card">
+                <div class="card-title">📊 المخرجات والنتائج</div>
+                <div class="card-content">
+                    <div class="grid-2">
+                        <div>
+                            <h4 style="color: var(--accent-color); margin-bottom: 1rem;">✅ الأدوات والتقنيات</h4>
+                            <ul>
+                                <li>منصات السحابة للعروض التقديمية (Google Slides, Canva)</li>
+                                <li>أدوات الذكاء الاصطناعي (Beautiful.ai, Tome)</li>
+                                <li>منصات العروض التفاعلية (Prezi, Mentimeter)</li>
+                                <li>أدوات التصور البياني (Tableau, PowerBI)</li>
+                                <li>تقنيات HTML/CSS/JavaScript للعروض المخصصة</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--success-color); margin-bottom: 1rem;">🎯 القيمة المضافة</h4>
+                            <ul>
+                                <li>تحسين الإنتاجية بنسبة 300%</li>
+                                <li>إنشاء عروض احترافية في دقائق</li>
+                                <li>التعاون الفوري مع الفريق</li>
+                                <li>تحديثات تلقائية للبيانات والمحتوى</li>
+                                <li>تجربة مستخدم متطورة وتفاعلية</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integrated Project Outputs -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🚀</span>
+                المشروع الذكي المتكامل - النتائج الشاملة
+            </h2>
+            
+            <div class="card">
+                <div class="card-title">🎯 الرؤية الاستراتيجية للمشروع</div>
+                <div class="card-content">
+                    <p style="font-size: 1.1rem; line-height: 2; margin-bottom: 1.5rem;">
+                        يهدف المشروع إلى تطوير نظام متكامل لإنشاء وإدارة العروض التقديمية الذكية التي تجمع بين أفضل الممارسات التقليدية والتقنيات الحديثة. من خلال دمج المفاهيم من كلا الفيديوهين، نصل إلى حل شامل يلبي احتياجات المؤسسات الحديثة.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-title">📐 المكونات الأساسية</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>نظام قوالب ذكية متعددة</li>
+                            <li>محرك ذكاء اصطناعي للمحتوى</li>
+                            <li>مكتبة وسائط متعددة شاملة</li>
+                            <li>أدوات تحليل وقياس الأداء</li>
+                            <li>واجهة تعاون فريقي متقدمة</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">⚙️ الخصائص التقنية</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>تقنية Progressive Web App (PWA)</li>
+                            <li>استجابة كاملة لجميع الأجهزة</li>
+                            <li>دعم العمل بدون إنترنت</li>
+                            <li>تكامل مع APIs متعددة</li>
+                            <li>أمان وتشفير متقدم للبيانات</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💡 الابتكارات الفريدة</div>
+                    <div class="card-content">
+                        <ul>
+                            <li>توليد عروض تلقائي بالذكاء الاصطناعي</li>
+                            <li>تحليل الجمهور في الوقت الفعلي</li>
+                            <li>تخصيص ديناميكي حسب السياق</li>
+                            <li>دمج البيانات المباشرة والحية</li>
+                            <li>تجربة تفاعلية متعددة الأبعاد</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Implementation Roadmap -->
+            <div class="card">
+                <div class="card-title">🗺️ خارطة طريق التنفيذ</div>
+                <div class="card-content">
+                    <div class="grid-2">
+                        <div>
+                            <h4 style="color: var(--gold-color); margin-bottom: 1rem;">المرحلة الأولى (شهر 1-3)</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 0.5rem; background: rgba(37, 99, 235, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ✓ تحليل المتطلبات وتصميم النظام
+                                </li>
+                                <li style="padding: 0.5rem; background: rgba(37, 99, 235, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ✓ تطوير البنية التحتية الأساسية
+                                </li>
+                                <li style="padding: 0.5rem; background: rgba(37, 99, 235, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ✓ إنشاء نظام القوالب الذكية
+                                </li>
+                                <li style="padding: 0.5rem; background: rgba(37, 99, 235, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ✓ دمج محرك الذكاء الاصطناعي
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--gold-color); margin-bottom: 1rem;">المرحلة الثانية (شهر 4-6)</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 0.5rem; background: rgba(124, 58, 237, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ⚡ تطوير واجهات المستخدم التفاعلية
+                                </li>
+                                <li style="padding: 0.5rem; background: rgba(124, 58, 237, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ⚡ دمج أدوات التعاون الجماعي
+                                </li>
+                                <li style="padding: 0.5rem; background: rgba(124, 58, 237, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ⚡ إطلاق نسخة تجريبية Beta
+                                </li>
+                                <li style="padding: 0.5rem; background: rgba(124, 58, 237, 0.1); margin-bottom: 0.5rem; border-radius: 5px;">
+                                    ⚡ جمع التغذية الراجعة والتحسين
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Metrics -->
+            <div class="card">
+                <div class="card-title">📈 مؤشرات النجاح والأداء (KPIs)</div>
+                <div class="card-content">
+                    <div class="grid-3">
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+                            <div style="font-size: 2.5rem; color: var(--success-color); margin-bottom: 0.5rem;">95%</div>
+                            <div style="color: var(--text-light);">معدل رضا المستخدمين</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(37, 99, 235, 0.1); border-radius: 10px;">
+                            <div style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">75%</div>
+                            <div style="color: var(--text-light);">توفير في الوقت</div>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(251, 191, 36, 0.1); border-radius: 10px;">
+                            <div style="font-size: 2.5rem; color: var(--gold-color); margin-bottom: 0.5rem;">10x</div>
+                            <div style="color: var(--text-light);">تحسين الإنتاجية</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Future Vision -->
+            <div class="card">
+                <div class="card-title">🔮 الرؤية المستقبلية</div>
+                <div class="card-content">
+                    <div class="analysis-content">
+                        <p style="font-size: 1.1rem; line-height: 2;">
+                            يمثل هذا المشروع نقطة انطلاق نحو مستقبل العروض التقديمية الذكية. من خلال الاستفادة من التقنيات الحديثة مثل الذكاء الاصطناعي، التعلم الآلي، والواقع المعزز، نهدف إلى:
+                        </p>
+                        <ul style="list-style: none; padding: 0; margin: 1.5rem 0;">
+                            <li style="padding: 1rem; background: rgba(37, 99, 235, 0.1); margin-bottom: 0.75rem; border-radius: 8px; border-right: 4px solid var(--primary-color);">
+                                <strong style="color: var(--gold-color);">🎯 تحويل الطريقة</strong> التي نفكر بها حول العروض التقديمية - من أدوات ثابتة إلى تجارب تفاعلية حية
+                            </li>
+                            <li style="padding: 1rem; background: rgba(124, 58, 237, 0.1); margin-bottom: 0.75rem; border-radius: 8px; border-right: 4px solid var(--secondary-color);">
+                                <strong style="color: var(--gold-color);">🚀 تمكين الجميع</strong> من إنشاء عروض احترافية بغض النظر عن مستوى الخبرة التقنية أو التصميمية
+                            </li>
+                            <li style="padding: 1rem; background: rgba(16, 185, 129, 0.1); margin-bottom: 0.75rem; border-radius: 8px; border-right: 4px solid var(--success-color);">
+                                <strong style="color: var(--gold-color);">💡 ريادة الابتكار</strong> في مجال تكنولوجيا العروض التقديمية على المستوى الإقليمي والعالمي
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">✨</span>
+                الخلاصة والتوصيات
+            </h2>
+            <div class="highlight-box">
+                <div style="font-size: 1.15rem; line-height: 2;">
+                    <p style="margin-bottom: 1.5rem;">
+                        من خلال التحليل الشامل للفيديوهين، نستنتج أن مستقبل العروض التقديمية يكمن في دمج <strong style="color: var(--gold-color);">الإبداع البشري</strong> مع <strong style="color: var(--gold-color);">قوة التكنولوجيا الذكية</strong>. المشروع المقترح يوفر حلاً متكاملاً يجمع بين:
+                    </p>
+                    <div class="grid-3">
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(37, 99, 235, 0.15); border-radius: 10px; border: 1px solid var(--primary-color);">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎨</div>
+                            <strong style="color: var(--gold-color);">التصميم الإبداعي</strong>
+                            <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-gray);">
+                                أفضل الممارسات في التصميم البصري والسرد القصصي
+                            </p>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(124, 58, 237, 0.15); border-radius: 10px; border: 1px solid var(--secondary-color);">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🤖</div>
+                            <strong style="color: var(--gold-color);">الذكاء الاصطناعي</strong>
+                            <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-gray);">
+                                أتمتة ذكية وتحليل متقدم للمحتوى والأداء
+                            </p>
+                        </div>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(16, 185, 129, 0.15); border-radius: 10px; border: 1px solid var(--success-color);">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚡</div>
+                            <strong style="color: var(--gold-color);">التفاعلية المتقدمة</strong>
+                            <p style="font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-gray);">
+                                تجربة مستخدم ديناميكية وتفاعلية بالكامل
+                            </p>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1.5rem; text-align: center; font-size: 1.2rem; color: var(--gold-color);">
+                        <strong>🌟 النتيجة النهائية: نظام ذكي متكامل لعروض تقديمية من الجيل القادم 🌟</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
