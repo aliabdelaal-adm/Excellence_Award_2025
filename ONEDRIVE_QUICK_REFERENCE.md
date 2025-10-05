@@ -47,8 +47,12 @@ cp -r Excellence_Award_2025 ~/OneDrive/
 **Git + OneDrive**
 
 ```bash
-# انتقل إلى OneDrive
+# OneDrive الشخصي (Personal)
 cd ~/OneDrive
+
+# أو OneDrive المؤسسي (Corporate/SharePoint)
+cd "~/OneDrive - adm/"
+# Windows: cd "C:\Users\YourName\OneDrive - adm"
 
 # استنساخ المشروع
 git clone https://github.com/aliabdelaal-adm/Excellence_Award_2025.git
@@ -62,6 +66,9 @@ git pull  # التحديث من GitHub
 ⏱️ الوقت: دقيقتان  
 🎯 الصعوبة: متوسط  
 ✨ الفائدة: نسخ احتياطي مزدوج (GitHub + OneDrive)
+
+> 💼 **للمؤسسات:** إذا كنت تستخدم OneDrive للعمل، سيتم المزامنة تلقائياً مع SharePoint  
+> 🔗 الوصول عبر الويب: `https://[company]-my.sharepoint.com/personal/[username]/Documents/Excellence_Award_2025`
 
 ---
 

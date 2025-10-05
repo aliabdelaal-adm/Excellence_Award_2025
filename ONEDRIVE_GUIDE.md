@@ -154,9 +154,26 @@ rclone config  # اتبع التعليمات لإعداد OneDrive
 #### 2. تحديد مجلد OneDrive
 
 بعد التثبيت، ستجد مجلد OneDrive في:
+
+##### OneDrive الشخصي (Personal):
 - **Windows:** `C:\Users\YourUsername\OneDrive`
 - **Mac:** `~/OneDrive` أو `/Users/YourUsername/OneDrive`
 - **Linux:** حسب إعداد rclone
+
+##### OneDrive للعمل/المؤسسات (SharePoint OneDrive):
+- **Windows:** `C:\Users\YourUsername\OneDrive - اسم المؤسسة`
+  - مثال: `C:\Users\ali.abdelaal\OneDrive - adm`
+- **Mac:** `~/OneDrive - اسم المؤسسة`
+  - مثال: `~/OneDrive - adm`
+
+> 📌 **للتحقق من المسار الصحيح:**
+> 1. انقر بيمين الماوس على أيقونة OneDrive في شريط المهام/القائمة
+> 2. اختر "الإعدادات" أو "Settings"
+> 3. في تبويب "الحساب" أو "Account"، ستجد المسار الكامل
+>
+> 🔗 **الوصول عبر SharePoint:**
+> - رابط الويب: `https://[company]-my.sharepoint.com/personal/[username]_[domain]/Documents/`
+> - مثال: `https://admunicipality-my.sharepoint.com/personal/ali_abdelaal_adm_gov_ae/Documents/Excellence_Award_2025`
 
 #### 3. نسخ المشروع إلى OneDrive
 
@@ -165,15 +182,23 @@ rclone config  # اتبع التعليمات لإعداد OneDrive
 # انتقل إلى موقع المشروع الأصلي
 cd C:\path\to\your\project
 
-# انسخ المشروع بالكامل إلى OneDrive
+# النسخ إلى OneDrive الشخصي
 xcopy /E /I /Y Excellence_Award_2025 "%USERPROFILE%\OneDrive\Excellence_Award_2025"
+
+# أو النسخ إلى OneDrive المؤسسي (SharePoint)
+xcopy /E /I /Y Excellence_Award_2025 "%USERPROFILE%\OneDrive - adm\Documents\Excellence_Award_2025"
 ```
 
 ##### على Windows (PowerShell):
 ```powershell
 # تحديد المسارات
 $source = "C:\path\to\Excellence_Award_2025"
+
+# OneDrive الشخصي
 $destination = "$env:USERPROFILE\OneDrive\Excellence_Award_2025"
+
+# أو OneDrive المؤسسي (SharePoint)
+# $destination = "$env:USERPROFILE\OneDrive - adm\Documents\Excellence_Award_2025"
 
 # نسخ مع جميع المحتويات
 Copy-Item -Path $source -Destination $destination -Recurse -Force
@@ -183,20 +208,44 @@ Write-Host "تم النسخ بنجاح!" -ForegroundColor Green
 
 ##### على Mac/Linux:
 ```bash
-# باستخدام cp
+# باستخدام cp إلى OneDrive الشخصي
 cp -r /path/to/Excellence_Award_2025 ~/OneDrive/
+
+# أو إلى OneDrive المؤسسي (SharePoint)
+cp -r /path/to/Excellence_Award_2025 ~/OneDrive\ -\ adm/Documents/
 
 # أو باستخدام rsync (أفضل)
 rsync -av /path/to/Excellence_Award_2025 ~/OneDrive/
+
+# rsync إلى OneDrive المؤسسي
+rsync -av /path/to/Excellence_Award_2025 ~/OneDrive\ -\ adm/Documents/
 ```
 
 #### 4. التحقق من المزامنة
 
+##### OneDrive الشخصي:
 ```
 1. افتح OneDrive على الويب: https://onedrive.live.com
 2. تأكد من ظهور مجلد "Excellence_Award_2025"
 3. تحقق من وجود جميع الملفات
 4. أيقونة OneDrive ستظهر علامة زرقاء ✓ عند اكتمال المزامنة
+```
+
+##### OneDrive المؤسسي (SharePoint):
+```
+1. افتح SharePoint OneDrive:
+   https://[company]-my.sharepoint.com/
+   مثال: https://admunicipality-my.sharepoint.com/
+   
+2. انتقل إلى "My files" أو "ملفاتي"
+
+3. تحقق من وجود المجلد في المسار:
+   Documents/Excellence_Award_2025
+   
+4. الرابط المباشر سيكون مشابهاً لـ:
+   https://admunicipality-my.sharepoint.com/personal/ali_abdelaal_adm_gov_ae/Documents/Excellence_Award_2025
+   
+5. أيقونة OneDrive ستظهر علامة زرقاء ✓ عند اكتمال المزامنة
 ```
 
 #### 5. العمل مع المزامنة التلقائية
@@ -228,6 +277,8 @@ rsync -av /path/to/Excellence_Award_2025 ~/OneDrive/
 ### الخطوات:
 
 #### 1. استنساخ المستودع مباشرة في OneDrive
+
+##### أ) OneDrive الشخصي (Personal OneDrive)
 ```bash
 # انتقل إلى مجلد OneDrive
 cd ~/OneDrive  # Mac/Linux
@@ -239,6 +290,34 @@ git clone https://github.com/aliabdelaal-adm/Excellence_Award_2025.git
 
 # الآن المشروع في OneDrive ومتصل بـ Git
 ```
+
+##### ب) OneDrive للعمل (SharePoint/Corporate OneDrive)
+```bash
+# انتقل إلى مجلد OneDrive المؤسسي
+# على Windows:
+cd "C:\Users\YourName\OneDrive - adm"
+# أو
+cd "C:\Users\YourName\OneDrive - Abu Dhabi Municipality"
+
+# على Mac/Linux:
+cd ~/OneDrive\ -\ adm/
+# أو
+cd ~/OneDrive\ -\ Abu\ Dhabi\ Municipality/
+
+# استنساخ المشروع من GitHub
+git clone https://github.com/aliabdelaal-adm/Excellence_Award_2025.git
+
+# الآن المشروع في OneDrive المؤسسي ومتصل بـ Git
+```
+
+> 💡 **ملاحظة:** مجلد OneDrive المؤسسي عادةً يكون باسم "OneDrive - اسم المؤسسة"
+> 
+> 📂 **مثال المسار الكامل:**
+> - Windows: `C:\Users\ali.abdelaal\OneDrive - adm\Documents\Excellence_Award_2025`
+> - Mac/Linux: `~/OneDrive - adm/Documents/Excellence_Award_2025`
+>
+> 🔗 **الوصول عبر الويب:** يمكن الوصول للملفات عبر SharePoint:
+> `https://admunicipality-my.sharepoint.com/personal/ali_abdelaal_adm_gov_ae/Documents/Excellence_Award_2025`
 
 #### 2. العمل على المشروع
 ```bash
