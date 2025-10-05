@@ -6,9 +6,16 @@
 
 **خطوة واحدة فقط!** | **Just One Step!**
 
+#### Windows Users / مستخدمي Windows:
 1. انقر نقراً مزدوجاً على: `Upload-ToOneDrive.bat`
 2. اتبع التعليمات على الشاشة
 3. تم! ✅
+
+#### Mac/Linux Users / مستخدمي Mac/Linux:
+1. افتح Terminal في مجلد المشروع
+2. شغّل: `./Upload-ToOneDrive.sh`
+3. اتبع التعليمات على الشاشة
+4. تم! ✅
 
 ---
 
@@ -45,19 +52,31 @@ https://admunicipality-my.sharepoint.com/personal/ali_abdelaal_adm_gov_ae/Docume
 ## 🎯 3 طرق للرفع | 3 Ways to Upload
 
 ### 1️⃣ الطريقة السهلة (موصى بها)
+**Windows:**
 ```
 انقر مرتين على: Upload-ToOneDrive.bat
 ```
 
+**Mac/Linux:**
+```bash
+./Upload-ToOneDrive.sh
+```
+
 ### 2️⃣ PowerShell
 ```powershell
+# Windows
 .\Upload-ToOneDrive.ps1
+
+# Mac/Linux
+pwsh ./Upload-ToOneDrive.ps1
 ```
 
 ### 3️⃣ يدوياً
 ```
 انسخ المجلد كاملاً إلى:
-C:\Users\YourName\OneDrive - adm\Documents\
+Windows: C:\Users\YourName\OneDrive - adm\Documents\
+Mac: ~/Library/CloudStorage/OneDrive/Documents/
+Linux: ~/OneDrive/Documents/
 ```
 
 ---

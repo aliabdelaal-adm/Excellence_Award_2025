@@ -326,15 +326,29 @@ Deploy-ToSharePoint-Simple.bat
 **أسهل طريقة لرفع جميع الملفات إلى OneDrive تلقائياً!**
 
 #### للمستخدمين العاديين - خطوة واحدة فقط!
+
+**Windows:**
 ```
 1. انقر نقراً مزدوجاً على: Upload-ToOneDrive.bat
 2. اتبع التعليمات
 3. تم! ✅
 ```
 
+**Mac/Linux:**
+```bash
+1. افتح Terminal في مجلد المشروع
+2. شغّل: ./Upload-ToOneDrive.sh
+3. اتبع التعليمات
+4. تم! ✅
+```
+
 #### للمطورين - PowerShell
 ```powershell
+# Windows
 .\Upload-ToOneDrive.ps1
+
+# Mac/Linux
+pwsh ./Upload-ToOneDrive.ps1
 ```
 
 **الملفات ستُرفع إلى:**
