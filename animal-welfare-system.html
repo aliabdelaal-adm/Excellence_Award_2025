@@ -914,9 +914,19 @@
     </div>
 
     <script>
-        // Reports Distribution Chart
-        const reportsCtx = document.getElementById('reportsChart').getContext('2d');
-        new Chart(reportsCtx, {
+        // Check if Chart.js is loaded
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js is not loaded. Charts will not be displayed.');
+            // Add a message to chart containers
+            const chartContainers = document.querySelectorAll('canvas');
+            chartContainers.forEach(canvas => {
+                const container = canvas.parentElement;
+                container.innerHTML = '<div style="text-align: center; padding: 2rem; color: #7f8c8d;"><p>📊 الرسوم البيانية غير متاحة حالياً</p><p style="font-size: 0.9rem; margin-top: 0.5rem;">يرجى التأكد من الاتصال بالإنترنت</p></div>';
+            });
+        } else {
+            // Reports Distribution Chart
+            const reportsCtx = document.getElementById('reportsChart').getContext('2d');
+            new Chart(reportsCtx, {
             type: 'doughnut',
             data: {
                 labels: ['حالات إنقاذ', 'علاج وعناية', 'مخالفات', 'استفسارات', 'إيواء', 'أخرى'],
@@ -1072,6 +1082,7 @@
                 }
             }
         });
+        }
     </script>
 </body>
 </html>
