@@ -1172,137 +1172,115 @@
             window.print();
         }
 
-        // Auto-Scroll Feature
+        // Continuous Auto-Scroll Feature
         let autoScrollActive = false;
-        let autoScrollPaused = false;
         let autoScrollInterval = null;
-        let currentSectionIndex = 0;
-        let sections = [];
+        let scrollSpeed = 0.5; // Very slow scroll speed (pixels per frame)
+        let interactionTimeout = null;
 
-        function initAutoScroll() {
-            // Get all main sections
-            sections = Array.from(document.querySelectorAll('.section'));
-        }
-
-        function toggleAutoScroll() {
-            if (!autoScrollActive) {
-                startAutoScroll();
-            } else {
-                stopAutoScroll();
-            }
-        }
-
-        function startAutoScroll() {
-            initAutoScroll();
+        function startContinuousScroll() {
+            if (autoScrollActive) return;
+            
             autoScrollActive = true;
-            autoScrollPaused = false;
-            currentSectionIndex = 0;
 
             // Update UI
             const indicator = document.getElementById('autoScrollIndicator');
             if (indicator) indicator.classList.add('active');
 
-            // Scroll to top first
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Start scrolling after a short delay
-            setTimeout(() => {
+            // Start continuous scrolling
+            function scroll() {
                 if (autoScrollActive) {
-                    scrollToSection(0);
-                }
-            }, 1000);
-        }
-
-        function scrollToSection(index) {
-            if (index >= sections.length) {
-                // Reached end, restart or stop
-                currentSectionIndex = 0;
-                index = 0;
-                // Optionally stop after one full cycle:
-                // stopAutoScroll();
-                // return;
-            }
-
-            const section = sections[index];
-            if (section) {
-                // Smooth scroll to section
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                
-                // Update progress
-                updateProgress(index);
-                
-                // Schedule next section
-                currentSectionIndex = index;
-                const pauseTime = calculatePauseTime(section);
-                
-                if (autoScrollInterval) {
-                    clearTimeout(autoScrollInterval);
-                }
-                
-                autoScrollInterval = setTimeout(() => {
-                    if (autoScrollActive && !autoScrollPaused) {
-                        scrollToSection(index + 1);
+                    // Scroll down by a small amount
+                    window.scrollBy(0, scrollSpeed);
+                    
+                    // Update progress based on scroll position
+                    updateProgress();
+                    
+                    // Check if reached bottom
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                        // Restart from top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
-                }, pauseTime);
+                    
+                    // Continue scrolling
+                    autoScrollInterval = requestAnimationFrame(scroll);
+                }
             }
-        }
-
-        function calculatePauseTime(section) {
-            // Calculate pause time based on content length
-            const contentHeight = section.offsetHeight;
-            const minTime = 4000; // 4 seconds minimum (more content in this page)
-            const maxTime = 10000; // 10 seconds maximum
             
-            // More content = longer pause
-            const calculatedTime = Math.min(maxTime, minTime + (contentHeight / 80));
-            return calculatedTime;
+            scroll();
         }
 
-        function updateProgress(index) {
-            const progressFill = document.getElementById('autoScrollProgress');
-            if (progressFill && sections.length > 0) {
-                const progress = ((index + 1) / sections.length) * 100;
-                progressFill.style.width = progress + '%';
-            }
-        }
-
-        function pauseAutoScroll() {
-            if (!autoScrollActive) return;
-            
-            autoScrollPaused = !autoScrollPaused;
-            
-            const btn = document.querySelector('.auto-scroll-indicator .control-btn');
-            if (btn) {
-                btn.textContent = autoScrollPaused ? '▶️ استئناف' : '⏸️ إيقاف مؤقت';
-            }
-
-            if (!autoScrollPaused && autoScrollActive) {
-                // Resume scrolling
-                scrollToSection(currentSectionIndex + 1);
-            } else if (autoScrollInterval) {
-                clearTimeout(autoScrollInterval);
-            }
-        }
-
-        function stopAutoScroll() {
+        function stopContinuousScroll() {
             autoScrollActive = false;
-            autoScrollPaused = false;
 
             if (autoScrollInterval) {
-                clearTimeout(autoScrollInterval);
+                cancelAnimationFrame(autoScrollInterval);
                 autoScrollInterval = null;
             }
 
             // Update UI
             const indicator = document.getElementById('autoScrollIndicator');
             if (indicator) indicator.classList.remove('active');
+        }
 
+        function pauseContinuousScroll() {
+            if (!autoScrollActive) return;
+            
+            stopContinuousScroll();
+            
+            // Clear any existing timeout
+            if (interactionTimeout) {
+                clearTimeout(interactionTimeout);
+            }
+            
+            // Resume after 3 seconds of no interaction
+            interactionTimeout = setTimeout(() => {
+                startContinuousScroll();
+            }, 3000);
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('autoScrollProgress');
+            if (progressFill) {
+                const scrollPercentage = (window.scrollY / (document.body.offsetHeight - window.innerHeight)) * 100;
+                progressFill.style.width = Math.min(100, scrollPercentage) + '%';
+            }
+        }
+
+        function pauseAutoScroll() {
+            pauseContinuousScroll();
+            const btn = document.querySelector('.auto-scroll-indicator .control-btn');
+            if (btn) {
+                btn.textContent = '▶️ استئناف';
+            }
+        }
+
+        function stopAutoScroll() {
+            stopContinuousScroll();
+            
+            // Clear any pending resume timeout
+            if (interactionTimeout) {
+                clearTimeout(interactionTimeout);
+                interactionTimeout = null;
+            }
+            
             // Reset progress
             const progressFill = document.getElementById('autoScrollProgress');
             if (progressFill) progressFill.style.width = '0%';
         }
 
-        // Keyboard controls
+        // Stop on any click
+        document.addEventListener('click', (e) => {
+            // Don't stop if clicking on control buttons
+            if (e.target.closest('.auto-scroll-indicator')) {
+                return;
+            }
+            if (autoScrollActive) {
+                pauseContinuousScroll();
+            }
+        });
+
+        // Stop on keyboard interaction
         document.addEventListener('keydown', (e) => {
             if (autoScrollActive) {
                 if (e.key === ' ' || e.key === 'Spacebar') {
@@ -1311,29 +1289,31 @@
                 } else if (e.key === 'Escape') {
                     e.preventDefault();
                     stopAutoScroll();
+                } else {
+                    // Any other key pauses temporarily
+                    pauseContinuousScroll();
                 }
             }
         });
 
-        // Stop auto-scroll on manual scroll
+        // Stop on manual scroll
         let scrollTimeout;
         window.addEventListener('wheel', () => {
-            if (autoScrollActive && !autoScrollPaused) {
-                // User is manually scrolling, pause auto-scroll temporarily
-                autoScrollPaused = true;
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    if (autoScrollActive) {
-                        autoScrollPaused = false;
-                        scrollToSection(currentSectionIndex + 1);
-                    }
-                }, 2000);
+            if (autoScrollActive) {
+                pauseContinuousScroll();
+            }
+        }, { passive: true });
+
+        // Stop on touch
+        window.addEventListener('touchstart', () => {
+            if (autoScrollActive) {
+                pauseContinuousScroll();
             }
         }, { passive: true });
 
         // Auto-start scrolling when page loads
         window.addEventListener('load', () => {
-            startAutoScroll();
+            startContinuousScroll();
         });
     </script>
 </body>
