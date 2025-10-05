@@ -15,10 +15,10 @@
             --primary-color: #2563eb;
             --secondary-color: #7c3aed;
             --accent-color: #06b6d4;
-            --dark-bg: #0f172a;
-            --light-bg: #1e293b;
-            --text-light: #f1f5f9;
-            --text-gray: #94a3b8;
+            --dark-bg: #e8f4f8;
+            --light-bg: #f0f8ff;
+            --text-light: #1e293b;
+            --text-gray: #475569;
             --success-color: #10b981;
             --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -43,17 +43,50 @@
             position: fixed;
             inset: 0;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(79, 172, 254, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(79, 172, 254, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
-            animation: backgroundShift 20s ease infinite;
+            animation: backgroundShift 20s ease infinite, backgroundColorChange 15s ease infinite;
         }
 
         @keyframes backgroundShift {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes backgroundColorChange {
+            0% {
+                background: 
+                    radial-gradient(circle at 20% 50%, rgba(79, 172, 254, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+            }
+            25% {
+                background: 
+                    radial-gradient(circle at 70% 30%, rgba(245, 147, 251, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 30% 70%, rgba(245, 87, 108, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%);
+            }
+            50% {
+                background: 
+                    radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 60% 20%, rgba(79, 172, 254, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%);
+            }
+            75% {
+                background: 
+                    radial-gradient(circle at 50% 40%, rgba(245, 158, 11, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(239, 68, 68, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 70% 70%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+            }
+            100% {
+                background: 
+                    radial-gradient(circle at 20% 50%, rgba(79, 172, 254, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+            }
         }
 
         section {
@@ -66,7 +99,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             z-index: 1000;
             padding: 1rem 0;
@@ -955,7 +988,7 @@
             top: 50%;
             right: 2rem;
             transform: translateY(-50%);
-            display: none;
+            display: none !important;
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
@@ -969,7 +1002,7 @@
         }
 
         .auto-scroll-indicator.active {
-            display: flex;
+            display: none !important;
             animation: slideInRight 0.5s ease-out;
         }
 
@@ -2270,6 +2303,7 @@
         let autoScrollInterval = null;
         let currentSectionIndex = 0;
         let sections = [];
+        let continuousScrollAnimation = null;
 
         function initAutoScroll() {
             // Get all main sections
@@ -2288,49 +2322,56 @@
             initAutoScroll();
             autoScrollActive = true;
             autoScrollPaused = false;
-            currentSectionIndex = 0;
 
             // Update UI
             const indicator = document.getElementById('autoScrollIndicator');
             if (indicator) indicator.classList.add('active');
 
-            // Scroll to first section
-            if (sections.length > 0) {
-                scrollToSection(0);
+            // Start continuous smooth scrolling
+            continuousScroll();
+        }
+
+        function continuousScroll() {
+            if (!autoScrollActive || autoScrollPaused) return;
+
+            const scrollSpeed = 0.5; // pixels per frame (slow speed)
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+            function scroll() {
+                if (!autoScrollActive || autoScrollPaused) return;
+
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (currentScroll >= maxScroll) {
+                    // Reached bottom, scroll back to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => {
+                        if (autoScrollActive && !autoScrollPaused) {
+                            continuousScroll();
+                        }
+                    }, 2000); // Wait 2 seconds before restarting
+                } else {
+                    // Continue scrolling down
+                    window.scrollBy(0, scrollSpeed);
+                    continuousScrollAnimation = requestAnimationFrame(scroll);
+                }
             }
+
+            continuousScrollAnimation = requestAnimationFrame(scroll);
         }
 
         function scrollToSection(index) {
+            // Legacy function - kept for compatibility
             if (index >= sections.length) {
-                // Reached end, restart or stop
                 currentSectionIndex = 0;
                 index = 0;
-                // Optionally stop after one full cycle:
-                // stopAutoScroll();
-                // return;
             }
 
             const section = sections[index];
             if (section) {
-                // Smooth scroll to section
                 section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                
-                // Update progress
                 updateProgress(index);
-                
-                // Schedule next section
                 currentSectionIndex = index;
-                const pauseTime = calculatePauseTime(section);
-                
-                if (autoScrollInterval) {
-                    clearTimeout(autoScrollInterval);
-                }
-                
-                autoScrollInterval = setTimeout(() => {
-                    if (autoScrollActive && !autoScrollPaused) {
-                        scrollToSection(index + 1);
-                    }
-                }, pauseTime);
             }
         }
 
@@ -2365,9 +2406,9 @@
 
             if (!autoScrollPaused && autoScrollActive) {
                 // Resume scrolling
-                scrollToSection(currentSectionIndex + 1);
-            } else if (autoScrollInterval) {
-                clearTimeout(autoScrollInterval);
+                continuousScroll();
+            } else if (continuousScrollAnimation) {
+                cancelAnimationFrame(continuousScrollAnimation);
             }
         }
 
@@ -2378,6 +2419,11 @@
             if (autoScrollInterval) {
                 clearTimeout(autoScrollInterval);
                 autoScrollInterval = null;
+            }
+
+            if (continuousScrollAnimation) {
+                cancelAnimationFrame(continuousScrollAnimation);
+                continuousScrollAnimation = null;
             }
 
             // Update UI
@@ -2402,19 +2448,35 @@
             }
         });
 
+        // Stop auto-scroll on click/touch
+        document.addEventListener('click', (e) => {
+            // Don't stop if clicking on buttons or links
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('button') || e.target.closest('a')) {
+                return;
+            }
+            
+            if (autoScrollActive && !autoScrollPaused) {
+                stopAutoScroll();
+            }
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            // Don't stop if touching buttons or links
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('button') || e.target.closest('a')) {
+                return;
+            }
+            
+            if (autoScrollActive && !autoScrollPaused) {
+                stopAutoScroll();
+            }
+        }, { passive: true });
+
         // Stop auto-scroll on manual scroll
         let scrollTimeout;
         window.addEventListener('wheel', () => {
             if (autoScrollActive && !autoScrollPaused) {
-                // User is manually scrolling, pause auto-scroll temporarily
-                autoScrollPaused = true;
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    if (autoScrollActive) {
-                        autoScrollPaused = false;
-                        scrollToSection(currentSectionIndex + 1);
-                    }
-                }, 2000);
+                // User is manually scrolling, stop auto-scroll
+                stopAutoScroll();
             }
         }, { passive: true });
 
@@ -2481,6 +2543,11 @@
                         console.log('التشغيل التلقائي تم منعه من المتصفح. الرجاء الضغط على الزر للتشغيل.');
                     });
                 }
+
+                // Start auto-scroll automatically after page loads
+                setTimeout(() => {
+                    startAutoScroll();
+                }, 1000);
             }, 500);
         });
 
