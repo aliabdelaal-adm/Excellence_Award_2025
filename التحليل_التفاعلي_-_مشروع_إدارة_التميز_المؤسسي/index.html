@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحليل التفاعلي - مشروع إدارة التميز المؤسسي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #00a651;
+            --accent-color: #ffd700;
+            --dark-bg: #1a1a2e;
+            --light-bg: #f5f7fa;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-color: #e1e8ed;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background: var(--light-bg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin: 2rem 0 1rem;
+        }
+
+        .content-box {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .kpi-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .kpi-table thead {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .kpi-table th,
+        .kpi-table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .kpi-table th {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .kpi-table tbody tr:hover {
+            background: var(--light-bg);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            background: var(--light-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 30px;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            transition: width 1s ease;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 1rem 0;
+            padding-right: 1rem;
+        }
+
+        ul li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>📊 التحليل التفاعلي</h1>
+        <div class="subtitle">مشروع إدارة التميز المؤسسي</div>
+        <p style="margin-top: 1rem; opacity: 0.9;">تحليلات ومؤشرات أداء متقدمة</p>
+    </div>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← العودة للرئيسية</a>
+
+        <!-- Overview Metrics -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📈</span>
+                المؤشرات الرئيسية
+            </h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">95%</div>
+                    <div class="metric-label">معدل الإنجاز المتوقع</div>
+                    <div class="metric-desc">نسبة إنجاز المهام في الوقت المحدد</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">300%</div>
+                    <div class="metric-label">العائد على الاستثمار</div>
+                    <div class="metric-desc">ROI المتوقع خلال 3 سنوات</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">40%</div>
+                    <div class="metric-label">تحسين الكفاءة</div>
+                    <div class="metric-desc">زيادة متوقعة في الكفاءة المؤسسية</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">4.5/5</div>
+                    <div class="metric-label">رضا العملاء المستهدف</div>
+                    <div class="metric-desc">مستوى رضا المستفيدين</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPIs Table -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📊</span>
+                مؤشرات الأداء الرئيسية (KPIs)
+            </h2>
+            
+            <div class="content-box">
+                <table class="kpi-table">
+                    <thead>
+                        <tr>
+                            <th>المؤشر</th>
+                            <th>الوصف</th>
+                            <th>الوزن النسبي</th>
+                            <th>المستوى المطلوب</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>معدل الإنجاز</strong></td>
+                            <td>نسبة إنجاز المهام في الوقت المحدد</td>
+                            <td>20%</td>
+                            <td>≥ 95%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>جودة الأداء</strong></td>
+                            <td>مستوى جودة المخرجات والخدمات</td>
+                            <td>25%</td>
+                            <td>≥ 90%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>الابتكار</strong></td>
+                            <td>عدد المبادرات والحلول المبتكرة</td>
+                            <td>20%</td>
+                            <td>≥ 3 سنوياً</td>
+                        </tr>
+                        <tr>
+                            <td><strong>التطوير الذاتي</strong></td>
+                            <td>ساعات التدريب والشهادات المهنية</td>
+                            <td>15%</td>
+                            <td>≥ 80 ساعة سنوياً</td>
+                        </tr>
+                        <tr>
+                            <td><strong>التأثير المؤسسي</strong></td>
+                            <td>قياس التأثير على تحسين العمليات</td>
+                            <td>10%</td>
+                            <td>تحسين ملموس</td>
+                        </tr>
+                        <tr>
+                            <td><strong>رضا العملاء</strong></td>
+                            <td>مستوى رضا المستفيدين من الخدمات</td>
+                            <td>10%</td>
+                            <td>≥ 4.5/5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- KPI Distribution Chart -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📊</span>
+                توزيع الأوزان النسبية للمؤشرات
+            </h2>
+            
+            <div class="chart-container">
+                <canvas id="kpiChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Performance Analysis -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📈</span>
+                تحليل الأداء المتوقع
+            </h2>
+            
+            <div class="content-box">
+                <h3 class="subsection-title">معدل الإنجاز</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 95%;">95%</div>
+                </div>
+                
+                <h3 class="subsection-title">جودة الأداء</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 90%;">90%</div>
+                </div>
+                
+                <h3 class="subsection-title">مستوى الابتكار</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%;">85%</div>
+                </div>
+                
+                <h3 class="subsection-title">رضا العملاء</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 92%;">92%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Evaluation System -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">🤖</span>
+                نظام التقييم الذكي بالذكاء الاصطناعي
+            </h2>
+            
+            <div class="content-box">
+                <h3 class="subsection-title">🎯 مكونات النظام</h3>
+                <ul>
+                    <li><strong>التقييم الآلي الشامل:</strong> تحليل أداء الموظفين بشكل آلي بناءً على معايير متعددة</li>
+                    <li><strong>تحليل البيانات التاريخية:</strong> تحليل أداء الموظف عبر السنوات بشكل آلي</li>
+                    <li><strong>توصيات التطوير:</strong> اقتراح خطط تطوير شخصية لكل موظف</li>
+                    <li><strong>الكشف عن الأنماط:</strong> اكتشاف أنماط الأداء المتميز والمجالات التي تحتاج تحسين</li>
+                    <li><strong>التقارير الذكية:</strong> إنشاء تقارير تحليلية شاملة تلقائياً</li>
+                </ul>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="aiEvaluationChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Success Indicators -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">🎯</span>
+                مؤشرات النجاح على المدى القصير والبعيد
+            </h2>
+            
+            <div class="content-box">
+                <h3 class="subsection-title">🎯 مؤشرات قصيرة المدى (6-12 شهر)</h3>
+                <ul>
+                    <li>تشكيل الفريق الأساسي لإدارة التميز (100 موظف)</li>
+                    <li>إطلاق نظام التقييم الذكي بالذكاء الاصطناعي</li>
+                    <li>تحقيق رضا الموظفين بنسبة 80%</li>
+                    <li>إطلاق 3 مبادرات تميز على الأقل</li>
+                </ul>
+                
+                <h3 class="subsection-title">🎯 مؤشرات متوسطة المدى (1-2 سنة)</h3>
+                <ul>
+                    <li>تحقيق تحسين ملموس في مؤشرات الأداء المؤسسية بنسبة 30%</li>
+                    <li>تطبيق نظام التميز في جميع الإدارات</li>
+                    <li>رفع مستوى الابتكار والتطوير بنسبة 50%</li>
+                    <li>الحصول على شهادات جودة معتمدة</li>
+                </ul>
+                
+                <h3 class="subsection-title">🎯 مؤشرات بعيدة المدى (3-5 سنوات)</h3>
+                <ul>
+                    <li>الحصول على مراكز متقدمة في مؤشرات التميز العالمية</li>
+                    <li>تصدير النموذج إلى مؤسسات حكومية أخرى</li>
+                    <li>تحقيق عائد استثماري 300% أو أكثر</li>
+                    <li>بناء ثقافة تميز راسخة في المؤسسة</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Timeline Projection -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📅</span>
+                التوقعات الزمنية للإنجاز
+            </h2>
+            
+            <div class="chart-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // KPI Distribution Chart
+        const kpiCtx = document.getElementById('kpiChart').getContext('2d');
+        new Chart(kpiCtx, {
+            type: 'pie',
+            data: {
+                labels: ['معدل الإنجاز (20%)', 'جودة الأداء (25%)', 'الابتكار (20%)', 'التطوير الذاتي (15%)', 'التأثير المؤسسي (10%)', 'رضا العملاء (10%)'],
+                datasets: [{
+                    data: [20, 25, 20, 15, 10, 10],
+                    backgroundColor: [
+                        '#0066cc',
+                        '#00a651',
+                        '#ffd700',
+                        '#e74c3c',
+                        '#9b59b6',
+                        '#3498db'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    title: {
+                        display: true,
+                        text: 'التوزيع النسبي لمؤشرات الأداء الرئيسية',
+                        font: {
+                            size: 18,
+                            family: 'Cairo'
+                        }
+                    }
+                }
+            }
+        });
+
+        // AI Evaluation System Chart
+        const aiCtx = document.getElementById('aiEvaluationChart').getContext('2d');
+        new Chart(aiCtx, {
+            type: 'radar',
+            data: {
+                labels: ['التقييم الآلي', 'تحليل البيانات', 'التوصيات', 'كشف الأنماط', 'التقارير الذكية'],
+                datasets: [{
+                    label: 'مستوى الأداء الحالي',
+                    data: [65, 70, 60, 75, 80],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 102, 204, 0.2)',
+                    borderColor: 'rgb(0, 102, 204)',
+                    pointBackgroundColor: 'rgb(0, 102, 204)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(0, 102, 204)'
+                }, {
+                    label: 'المستوى المستهدف',
+                    data: [95, 90, 92, 88, 95],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 166, 81, 0.2)',
+                    borderColor: 'rgb(0, 166, 81)',
+                    pointBackgroundColor: 'rgb(0, 166, 81)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(0, 166, 81)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'نظام التقييم الذكي - الأداء الحالي مقابل المستهدف',
+                        font: {
+                            size: 18,
+                            family: 'Cairo'
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Timeline Chart
+        const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+        new Chart(timelineCtx, {
+            type: 'line',
+            data: {
+                labels: ['الشهر 1', 'الشهر 6', 'السنة 1', 'السنة 2', 'السنة 3', 'السنة 5'],
+                datasets: [{
+                    label: 'معدل الإنجاز المتوقع (%)',
+                    data: [30, 60, 75, 85, 90, 95],
+                    borderColor: 'rgb(0, 102, 204)',
+                    backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'العائد على الاستثمار (%)',
+                    data: [0, 50, 100, 150, 250, 300],
+                    borderColor: 'rgb(0, 166, 81)',
+                    backgroundColor: 'rgba(0, 166, 81, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'التوقعات الزمنية للإنجاز والعائد على الاستثمار',
+                        font: {
+                            size: 18,
+                            family: 'Cairo'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1680,16 +1680,38 @@
             const container = document.getElementById('projectsContainer');
             container.innerHTML = projects.map(project => {
                 let clickHandler = '';
-                if (project.link) {
+                let analyticsLinks = '';
+                
+                // Check if project has analytics sub-links
+                if (project.analytics && project.analytics.length > 0) {
+                    analyticsLinks = `
+                        <div style="margin-top: 1rem; padding: 1rem; background: rgba(0, 102, 204, 0.05); border-radius: 8px;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1rem;">📊 التحليلات التفاعلية المتاحة:</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                ${project.analytics.map(analytic => `
+                                    <a href="${analytic.link}" 
+                                       style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; 
+                                              background: white; border-radius: 5px; transition: all 0.3s; display: block;
+                                              border: 1px solid var(--border-color);"
+                                       onmouseover="this.style.background='var(--primary-color)'; this.style.color='white';"
+                                       onmouseout="this.style.background='white'; this.style.color='var(--primary-color)';">
+                                        📈 ${analytic.title.replace('التحليل التفاعلي - ', '')}
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else if (project.link) {
                     // Check if it's an external link (starts with http)
                     if (project.link.startsWith('http')) {
                         clickHandler = `onclick="openSystemModal('${project.link}', '${project.icon} ${project.title}'); return false;"`;
-                    } else {
+                    } else if (project.link !== '#analytics-platform') {
                         clickHandler = `onclick="window.location.href='${project.link}'"`;
                     }
                 }
+                
                 return `
-                    <div class="project-card ${project.link ? 'clickable' : ''}" ${clickHandler}>
+                    <div class="project-card ${(project.link && project.link !== '#analytics-platform' && !project.analytics) ? 'clickable' : ''}" ${clickHandler}>
                         <div class="project-image">${project.icon}</div>
                         <div class="project-content">
                             <h3>${project.title}</h3>
@@ -1697,7 +1719,8 @@
                             <div class="tags">
                                 ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                             </div>
-                            ${project.link ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
+                            ${analyticsLinks}
+                            ${(project.link && project.link !== '#analytics-platform' && !project.analytics) ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
                         </div>
                     </div>
                 `;
