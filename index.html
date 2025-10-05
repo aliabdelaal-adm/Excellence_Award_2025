@@ -1883,16 +1883,26 @@
             const container = document.getElementById('portfolioContainer');
             if (!container) return;
             
-            container.innerHTML = portfolioItems.map(item => `
-                <div class="portfolio-card">
-                    <span class="icon">${item.icon}</span>
-                    <h3>${item.title}</h3>
-                    <p class="goals">${item.goals}</p>
-                    <a href="${item.fileUrl}" class="file-link" target="_blank">
-                        قيد التطوير 🔗
-                    </a>
-                </div>
-            `).join('');
+            // Projects that should show "قيد التطوير" (Under Development)
+            const underDevelopmentProjects = ['animal-welfare-system', 'data-dashboard'];
+            
+            container.innerHTML = portfolioItems.map(item => {
+                // Determine the link text based on project ID
+                const linkText = underDevelopmentProjects.includes(item.id) 
+                    ? 'قيد التطوير 🔗' 
+                    : 'عرض المشروع 🔗';
+                
+                return `
+                    <div class="portfolio-card">
+                        <span class="icon">${item.icon}</span>
+                        <h3>${item.title}</h3>
+                        <p class="goals">${item.goals}</p>
+                        <a href="${item.fileUrl}" class="file-link" target="_blank">
+                            ${linkText}
+                        </a>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Editable Content System
