@@ -468,6 +468,38 @@
             gap: 2rem;
         }
 
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 4rem;
+        }
+        
+        .category-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+            border-radius: 15px;
+            border: 2px solid rgba(6, 182, 212, 0.3);
+        }
+        
+        .category-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.5));
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
         .project-card {
             background: var(--light-bg);
             border-radius: 20px;
@@ -1487,12 +1519,12 @@
     <!-- Projects Section -->
     <section id="projects">
         <div class="container">
-            <h2 class="section-title">مشاريعي المميزة</h2>
+            <h2 class="section-title">مشاريعي وإنجازاتي</h2>
             <p class="section-subtitle">
-                مجموعة من المشاريع التي توضح خبرتي في تطوير الحلول الذكية
+                مجموعة متنوعة من المشاريع والأنظمة والمنصات التي تعكس خبرتي في تطوير الحلول الذكية المبتكرة
             </p>
-            <div class="projects-grid" id="projectsContainer">
-                <!-- Projects will be loaded dynamically -->
+            <div id="projectsContainer">
+                <!-- Projects will be loaded dynamically and grouped by category -->
             </div>
         </div>
     </section>
@@ -1820,53 +1852,88 @@
 
         function displayProjects(projects) {
             const container = document.getElementById('projectsContainer');
-            container.innerHTML = projects.map(project => {
-                let clickHandler = '';
-                let analyticsLinks = '';
-                
-                // Check if project has analytics sub-links
-                if (project.analytics && project.analytics.length > 0) {
-                    analyticsLinks = `
-                        <div style="margin-top: 1rem; padding: 1rem; background: rgba(0, 102, 204, 0.05); border-radius: 8px;">
-                            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1rem;">📊 التحليلات التفاعلية المتاحة:</h4>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                ${project.analytics.map(analytic => `
-                                    <a href="${analytic.link}" 
-                                       style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; 
-                                              background: white; border-radius: 5px; transition: all 0.3s; display: block;
-                                              border: 1px solid var(--border-color);"
-                                       onmouseover="this.style.background='var(--primary-color)'; this.style.color='white';"
-                                       onmouseout="this.style.background='white'; this.style.color='var(--primary-color)';">
-                                        📈 ${analytic.title.replace('التحليل التفاعلي - ', '')}
-                                    </a>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                } else if (project.link) {
-                    // Check if it's an external link (starts with http)
-                    if (project.link.startsWith('http')) {
-                        clickHandler = `onclick="openSystemModal('${project.link}', '${project.icon} ${project.title}'); return false;"`;
-                    } else if (project.link !== '#analytics-platform') {
-                        clickHandler = `onclick="window.location.href='${project.link}'"`;
-                    }
+            
+            // Group projects by category
+            const categories = {
+                'projects': { title: 'مشاريعي المميزة', icon: '🏆', projects: [] },
+                'systems': { title: 'الأنظمة الذكية', icon: '⚙️', projects: [] },
+                'platforms': { title: 'المنصات التفاعلية', icon: '🚀', projects: [] },
+                'achievements': { title: 'إنجازاتي المبتكرة', icon: '💡', projects: [] }
+            };
+            
+            // Categorize projects
+            projects.forEach(project => {
+                const category = project.category || 'projects';
+                if (categories[category]) {
+                    categories[category].projects.push(project);
                 }
+            });
+            
+            // Build HTML for each category
+            let html = '';
+            for (const [key, category] of Object.entries(categories)) {
+                if (category.projects.length === 0) continue;
                 
-                return `
-                    <div class="project-card ${(project.link && project.link !== '#analytics-platform' && !project.analytics) ? 'clickable' : ''}" ${clickHandler}>
-                        <div class="project-image">${project.icon}</div>
-                        <div class="project-content">
-                            <h3>${project.title}</h3>
-                            <p>${project.description}</p>
-                            <div class="tags">
-                                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                            </div>
-                            ${analyticsLinks}
-                            ${(project.link && project.link !== '#analytics-platform' && !project.analytics) ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
+                html += `
+                    <div class="category-section">
+                        <h3 class="category-title">
+                            <span class="category-icon">${category.icon}</span>
+                            ${category.title}
+                        </h3>
+                        <div class="category-grid">
+                            ${category.projects.map(project => {
+                                let clickHandler = '';
+                                let analyticsLinks = '';
+                                
+                                // Check if project has analytics sub-links
+                                if (project.analytics && project.analytics.length > 0) {
+                                    analyticsLinks = `
+                                        <div style="margin-top: 1rem; padding: 1rem; background: rgba(0, 102, 204, 0.05); border-radius: 8px;">
+                                            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem; font-size: 1rem;">📊 التحليلات التفاعلية المتاحة:</h4>
+                                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                                ${project.analytics.map(analytic => `
+                                                    <a href="${analytic.link}" 
+                                                       style="color: var(--primary-color); text-decoration: none; padding: 0.5rem; 
+                                                              background: white; border-radius: 5px; transition: all 0.3s; display: block;
+                                                              border: 1px solid var(--border-color);"
+                                                       onmouseover="this.style.background='var(--primary-color)'; this.style.color='white';"
+                                                       onmouseout="this.style.background='white'; this.style.color='var(--primary-color)';">
+                                                        📈 ${analytic.title.replace('التحليل التفاعلي - ', '')}
+                                                    </a>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                } else if (project.link) {
+                                    // Check if it's an external link (starts with http)
+                                    if (project.link.startsWith('http')) {
+                                        clickHandler = `onclick="openSystemModal('${project.link}', '${project.icon} ${project.title}'); return false;"`;
+                                    } else if (project.link !== '#analytics-platform') {
+                                        clickHandler = `onclick="window.location.href='${project.link}'"`;
+                                    }
+                                }
+                                
+                                return `
+                                    <div class="project-card ${(project.link && project.link !== '#analytics-platform' && !project.analytics) ? 'clickable' : ''}" ${clickHandler}>
+                                        <div class="project-image">${project.icon}</div>
+                                        <div class="project-content">
+                                            <h3>${project.title}</h3>
+                                            <p>${project.description}</p>
+                                            <div class="tags">
+                                                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                            </div>
+                                            ${analyticsLinks}
+                                            ${(project.link && project.link !== '#analytics-platform' && !project.analytics) ? '<div class="view-project-btn">عرض التفاصيل الكاملة ←</div>' : ''}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
                     </div>
                 `;
-            }).join('');
+            }
+            
+            container.innerHTML = html;
         }
 
         // File Upload Handling
