@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحليل التفاعلي - نظام إدارة التقارير الذكي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #00a651;
+            --accent-color: #ffd700;
+            --dark-bg: #1a1a2e;
+            --light-bg: #f5f7fa;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-color: #e1e8ed;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background: var(--light-bg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        .subsection-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin: 2rem 0 1rem;
+        }
+
+        .content-box {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: var(--light-bg);
+        }
+
+        ul {
+            list-style-position: inside;
+            margin: 1rem 0;
+            padding-right: 1rem;
+        }
+
+        ul li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-box {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            border-right: 5px solid var(--primary-color);
+        }
+
+        .feature-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>📊 التحليل التفاعلي</h1>
+        <div class="subtitle">نظام إدارة التقارير الذكي - خطة التفتيش الشهرية</div>
+        <p style="margin-top: 1rem; opacity: 0.9;">تحليلات متقدمة وإحصائيات تفاعلية</p>
+    </div>
+
+    <div class="container">
+        <a href="../index.html" class="back-link">← العودة للرئيسية</a>
+
+        <!-- Overview Metrics -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📈</span>
+                المؤشرات الرئيسية للأداء
+            </h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">70%</div>
+                    <div class="metric-label">توفير في الوقت</div>
+                    <div class="metric-desc">مقارنة بالطريقة التقليدية</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">85%</div>
+                    <div class="metric-label">تقليل الأخطاء</div>
+                    <div class="metric-desc">بفضل الأتمتة والذكاء الاصطناعي</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">50%</div>
+                    <div class="metric-label">تحسين الكفاءة</div>
+                    <div class="metric-desc">في إعداد التقارير الشهرية</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">استبدال البرامج التقليدية</div>
+                    <div class="metric-desc">Word, Excel, PowerPoint</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Components Analysis -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">⚙️</span>
+                تحليل مكونات النظام
+            </h2>
+            
+            <div class="feature-grid">
+                <div class="feature-box">
+                    <h3>📋 تقارير المفتشين</h3>
+                    <ul>
+                        <li>إدخال بيانات التفتيش اليومي</li>
+                        <li>رفع الصور والملاحظات</li>
+                        <li>تسجيل المخالفات والتحذيرات</li>
+                        <li>تقييم المحلات تلقائياً</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-box">
+                    <h3>📊 التقارير الشهرية</h3>
+                    <ul>
+                        <li>رسوم بيانية تفاعلية</li>
+                        <li>إحصائيات شاملة</li>
+                        <li>مقارنات بين الأشهر والسنوات</li>
+                        <li>تصدير متعدد الصيغات</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-box">
+                    <h3>📈 التقارير المتقدمة</h3>
+                    <ul>
+                        <li>تحليلات متقدمة بالذكاء الاصطناعي</li>
+                        <li>مؤشرات أداء ديناميكية</li>
+                        <li>تنبؤات وتوقعات مستقبلية</li>
+                        <li>تقارير قابلة للتخصيص</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-box">
+                    <h3>📋 جدول المناوبات</h3>
+                    <ul>
+                        <li>توزيع عادل ومتوازن</li>
+                        <li>مراعاة الإجازات</li>
+                        <li>عرض تقويمي تفاعلي</li>
+                        <li>إشعارات وتذكيرات</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-box">
+                    <h3>🏪 التوزيع الذكي للمحلات</h3>
+                    <ul>
+                        <li>خرائط جغرافية تفاعلية</li>
+                        <li>توزيع آلي بمعايير متعددة</li>
+                        <li>تحسين مسارات التفتيش</li>
+                        <li>تحديث ديناميكي</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-box">
+                    <h3>🏖️ تتبع الإجازات</h3>
+                    <ul>
+                        <li>طلب الإجازات إلكترونياً</li>
+                        <li>موافقات آلية أو يدوية</li>
+                        <li>ربط مع جدول المناوبات</li>
+                        <li>إحصائيات كاملة</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Efficiency Comparison Chart -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📊</span>
+                مقارنة الكفاءة: النظام الجديد vs الطريقة التقليدية
+            </h2>
+            
+            <div class="chart-container">
+                <canvas id="efficiencyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Software Replacement Analysis -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">🚀</span>
+                تحليل استبدال البرامج التقليدية
+            </h2>
+            
+            <div class="content-box">
+                <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">
+                    يوفر نظام إدارة خطة التفتيش الشهرية بديلاً متكاملاً وذكياً عن جميع البرامج التقليدية
+                    المستخدمة في إعداد الخطط والتقارير:
+                </p>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>البرنامج التقليدي</th>
+                        <th>الاستخدام السابق</th>
+                        <th>البديل في النظام الجديد</th>
+                        <th>المميزات الإضافية</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Microsoft Excel</strong></td>
+                        <td>إعداد جداول التفتيش والبيانات يدوياً</td>
+                        <td>جداول تفاعلية ذكية مع تحديث تلقائي</td>
+                        <td>
+                            • تحديث فوري للبيانات<br>
+                            • معادلات تلقائية<br>
+                            • تصدير Excel عند الحاجة<br>
+                            • لا حاجة لتصميم الجداول يدوياً
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Microsoft Word</strong></td>
+                        <td>كتابة التقارير الشهرية وتنسيقها</td>
+                        <td>تقارير احترافية تُنشأ تلقائياً</td>
+                        <td>
+                            • تنسيق احترافي موحد<br>
+                            • إدراج الرسوم البيانية تلقائياً<br>
+                            • تصدير PDF أو Word<br>
+                            • توفير 90% من وقت إعداد التقرير
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Microsoft PowerPoint</strong></td>
+                        <td>إعداد العروض التقديمية للاجتماعات</td>
+                        <td>عروض تفاعلية مباشرة من النظام</td>
+                        <td>
+                            • بيانات محدثة في الوقت الفعلي<br>
+                            • رسوم بيانية تفاعلية<br>
+                            • تصدير PowerPoint عند الحاجة<br>
+                            • العرض مباشرة من المتصفح
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- AI Analytics Features -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">🤖</span>
+                تحليلات الذكاء الاصطناعي المتقدمة
+            </h2>
+            
+            <div class="chart-container">
+                <canvas id="aiAnalyticsChart"></canvas>
+            </div>
+
+            <div class="content-box" style="margin-top: 2rem;">
+                <h3 class="subsection-title">مميزات التحليلات الذكية</h3>
+                <ul>
+                    <li><strong>التنبؤ بالأداء:</strong> توقع أداء المفتشين والمحلات في الأشهر القادمة</li>
+                    <li><strong>كشف الأنماط:</strong> اكتشاف أنماط المخالفات والسلوكيات غير المعتادة</li>
+                    <li><strong>التوصيات الذكية:</strong> اقتراحات لتحسين الأداء وتوزيع الموارد</li>
+                    <li><strong>تحليل الاتجاهات:</strong> فهم الاتجاهات طويلة المدى في بيانات التفتيش</li>
+                    <li><strong>تقييم المخاطر:</strong> تحديد المحلات والمناطق عالية المخاطر</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Time Savings Analysis -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">⏱️</span>
+                تحليل توفير الوقت
+            </h2>
+            
+            <div class="chart-container">
+                <canvas id="timeSavingsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Monthly Performance Metrics -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="icon">📅</span>
+                مؤشرات الأداء الشهرية
+            </h2>
+            
+            <div class="chart-container">
+                <canvas id="monthlyPerformanceChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Efficiency Comparison Chart
+        const efficiencyCtx = document.getElementById('efficiencyChart').getContext('2d');
+        new Chart(efficiencyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['إعداد التقارير', 'تحليل البيانات', 'إنشاء الرسوم البيانية', 'التصدير والمشاركة', 'التحديثات'],
+                datasets: [{
+                    label: 'الطريقة التقليدية (ساعات)',
+                    data: [8, 6, 4, 3, 5],
+                    backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                    borderColor: 'rgb(231, 76, 60)',
+                    borderWidth: 1
+                }, {
+                    label: 'النظام الجديد (ساعات)',
+                    data: [2, 1, 0.5, 0.5, 0.5],
+                    backgroundColor: 'rgba(0, 166, 81, 0.7)',
+                    borderColor: 'rgb(0, 166, 81)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'مقارنة الوقت المستغرق في المهام (بالساعات)',
+                        font: {
+                            size: 18,
+                            family: 'Cairo'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'الساعات'
+                        }
+                    }
+                }
+            }
+        });
+
+        // AI Analytics Chart
+        const aiAnalyticsCtx = document.getElementById('aiAnalyticsChart').getContext('2d');
+        new Chart(aiAnalyticsCtx, {
+            type: 'radar',
+            data: {
+                labels: ['التنبؤ بالأداء', 'كشف الأنماط', 'التوصيات الذكية', 'تحليل الاتجاهات', 'تقييم المخاطر'],
+                datasets: [{
+                    label: 'دقة التحليلات',
+                    data: [92, 88, 95, 90, 85],
+                    fill: true,
+                    backgroundColor: 'rgba(0, 102, 204, 0.2)',
+                    borderColor: 'rgb(0, 102, 204)',
+                    pointBackgroundColor: 'rgb(0, 102, 204)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(0, 102, 204)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'دقة وفعالية التحليلات الذكية (%)',
+                        font: {
+                            size: 18,
+                            family: 'Cairo'
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Time Savings Chart
+        const timeSavingsCtx = document.getElementById('timeSavingsChart').getContext('2d');
+        new Chart(timeSavingsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['الوقت الموفر (70%)', 'الوقت المستخدم (30%)'],
+                datasets: [{
+                    data: [70, 30],
+                    backgroundColor: [
+                        'rgba(0, 166, 81, 0.8)',
+                        'rgba(231, 76, 60, 0.8)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'نسبة توفير الوقت مقارنة بالطريقة التقليدية',
+                        font: {
+                            size: 18,
+                            family: 'Cairo'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Monthly Performance Chart
+        const monthlyPerformanceCtx = document.getElementById('monthlyPerformanceChart').getContext('2d');
+        new Chart(monthlyPerformanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                datasets: [{
+                    label: 'عدد التفتيشات',
+                    data: [450, 520, 480, 550, 600, 630],
+                    borderColor: 'rgb(0, 102, 204)',
+                    backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'المخالفات المكتشفة',
+                    data: [85, 92, 78, 95, 105, 110],
+                    borderColor: 'rgb(231, 76, 60)',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'معدل الامتثال (%)',
+                    data: [81, 82, 84, 83, 82.5, 82.5],
+                    borderColor: 'rgb(0, 166, 81)',
+                    backgroundColor: 'rgba(0, 166, 81, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'مؤشرات الأداء الشهرية',
+                        font: {
+                            size: 18,
+                            family: 'Cairo'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'العدد'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'النسبة المئوية (%)'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
