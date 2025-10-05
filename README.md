@@ -4,11 +4,11 @@
 
 ### نظرة عامة | Overview
 
-مشروع متكامل يهدف للفوز بتحدي التميز الداخلي في بلدية أبوظبي نحو تحول ذكي للمستقبل. المنصة تقدم حلولاً مبتكرة لتطوير الحلول البرمجية الذكية التي تعتمد على الذكاء الاصطناعي والحوسبة السحابية. المشروع يحول العمليات المؤسسية التقليدية (Word, Excel, PowerPoint) إلى حلول برمجية متقدمة مبنية على تقنيات الويب الحديثة.
+مشروع متكامل يهدف للفوز بتحدي التميز الداخلي في بلدية أبوظبي نحو تحول ذكي للمستقبل. المنصة تقدم حلولاً مبتكرة ومشاريع تطويرية تعتمد على الذكاء الاصطناعي والحوسبة السحابية من خلال تحويل العمليات المؤسسية التقليدية (Word, Excel, PowerPoint) إلى حلول برمجية متقدمة مبنية على تقنيات الويب الحديثة.
 
 An integrated project aimed at winning the Internal Excellence Challenge in Abu Dhabi Municipality towards a smart transformation for the future. The platform provides innovative solutions for developing smart software solutions based on artificial intelligence and cloud computing. The project transforms traditional institutional operations into advanced software solutions built on modern web technologies.
 
-مشروع متكامل أقدمه للفوز بجائزة التميز من خلال تطوير منصة احترافية للحلول البرمجية الذكية التي تعتمد على الذكاء الاصطناعي والحوسبة السحابية. أعمل على تحويل العمليات المؤسسية التقليدية (Word, Excel, PowerPoint) إلى حلول برمجية متقدمة مبنية على تقنيات الويب الحديثة في إدارة الرفق بالحيوان ببلدية مدينة أبوظبي.
+مشروع متكامل أقدمه للفوز بجائزة التميز 2025 من خلال عرض مشاريعي التطويرية على منصة احترافية للحلول البرمجية الذكية تعتمد على الذكاء الاصطناعي والحوسبة السحابية. أعمل على تحويل العمليات المؤسسية التقليدية (Word, Excel, PowerPoint) إلى حلول برمجية متقدمة مبنية على تقنيات الويب الحديثة .
 
 An integrated project presented for the Excellence Award by developing a professional platform for smart software solutions based on artificial intelligence and cloud computing. I work on transforming traditional institutional operations (Word, Excel, PowerPoint) into advanced software solutions built on modern web technologies at Animal Welfare Department, Abu Dhabi Municipality.
 
@@ -422,6 +422,6 @@ This project is open source and available for educational and commercial use.
 
 ---
 
-**تم التطوير بكل فخر لجائزة التميز 2024** 🏆
+**تم التطوير بكل فخر لجائزة التميز 2025** 🏆
 
-**Developed with pride for Excellence Award 2024** 🏆
+**Developed with pride for Excellence Award 2025** 🏆
