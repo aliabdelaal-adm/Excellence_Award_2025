@@ -1,0 +1,110 @@
+{
+  "deployment": {
+    "name": "Excellence Award 2025 - Internal Excellence Platform",
+    "description": "منصة التميز الداخلي لبلدية أبوظبي - مشروع جائزة التميز 2025",
+    "version": "1.0.0",
+    "author": "Dr. Ali Abdelaal",
+    "department": "Animal Welfare Department - Abu Dhabi Municipality"
+  },
+  "sharepoint": {
+    "siteUrl": "[YOUR-SHAREPOINT-SITE-URL]",
+    "documentLibrary": "Site Assets",
+    "targetFolder": "excellence-platform",
+    "contentType": "Document",
+    "language": "ar-AE"
+  },
+  "files": {
+    "mainPage": "index.html",
+    "dataFile": "plan-data.json",
+    "audioFile": "sheikh-zayed-message.mp3",
+    "pdfFile": "AwardGuideline3.pdf",
+    "htmlPages": [
+      "excellence-department-project.html",
+      "inspection-plan-system.html",
+      "beautiful-city-project.html",
+      "creative-presentations-generator.html",
+      "animal-welfare-system.html",
+      "challenges-and-solutions.html",
+      "benefits-summary.html",
+      "value-impact-summary.html",
+      "project-analysis-dashboard.html"
+    ],
+    "subdirectories": [
+      "التحليل_التفاعلي_-_نظام_إدارة_التقارير_الذكي",
+      "التحليل_التفاعلي_-_مشروع_إدارة_التميز_المؤسسي",
+      "التحليل_التفاعلي_-_مشروع_مظهر_أجمل_لمدينة_أفضل"
+    ]
+  },
+  "permissions": {
+    "defaultPermissions": "Read",
+    "groups": {
+      "readers": {
+        "name": "Excellence Platform Viewers",
+        "permission": "Read"
+      },
+      "editors": {
+        "name": "Excellence Platform Editors",
+        "permission": "Edit"
+      },
+      "admins": {
+        "name": "Excellence Platform Administrators",
+        "permission": "Full Control"
+      }
+    }
+  },
+  "features": {
+    "enableVersioning": true,
+    "majorVersionLimit": 50,
+    "enableMinorVersions": false,
+    "requireCheckout": false,
+    "enableContentApproval": false,
+    "enableSearch": true,
+    "enableIndexing": true
+  },
+  "customization": {
+    "editPassword": "admin2024",
+    "editPasswordSecure": "[CHANGE-THIS-TO-SECURE-PASSWORD]",
+    "adminShortcut": "Ctrl+Alt+E",
+    "autoScroll": true,
+    "welcomeAudio": true,
+    "audioAutoplay": false
+  },
+  "deployment_notes": {
+    "arabic": [
+      "تأكد من تغيير كلمة المرور في customization.editPasswordSecure قبل النشر",
+      "حدث siteUrl بعنوان موقع SharePoint الخاص بك",
+      "راجع SHAREPOINT_DEPLOYMENT_GUIDE.md للحصول على إرشادات مفصلة",
+      "تأكد من رفع جميع الملفات والمجلدات الفرعية",
+      "اختبر الموقع على أجهزة وأنظمة تشغيل مختلفة"
+    ],
+    "english": [
+      "Make sure to change the password in customization.editPasswordSecure before deployment",
+      "Update siteUrl with your SharePoint site URL",
+      "Review SHAREPOINT_DEPLOYMENT_GUIDE.md for detailed instructions",
+      "Ensure all files and subdirectories are uploaded",
+      "Test the site on different devices and operating systems"
+    ]
+  },
+  "metadata": {
+    "created": "2025-01-01",
+    "lastModified": "2025-01-01",
+    "compatibility": {
+      "sharepointOnline": true,
+      "sharepoint2019": true,
+      "sharepoint2016": true,
+      "modernExperience": true,
+      "classicExperience": true
+    },
+    "browsers": {
+      "chrome": "v90+",
+      "edge": "v90+",
+      "firefox": "v88+",
+      "safari": "v14+"
+    },
+    "mobile": {
+      "ios": true,
+      "android": true,
+      "responsive": true
+    }
+  }
+}
