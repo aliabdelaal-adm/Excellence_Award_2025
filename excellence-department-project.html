@@ -1161,7 +1161,7 @@
         // Continuous Auto-Scroll Feature
         let autoScrollActive = false;
         let autoScrollInterval = null;
-        let scrollSpeed = 0.5; // Very slow scroll speed (pixels per frame)
+        let scrollSpeed = 0.8; // Slightly faster scroll speed for better readability (pixels per frame)
         let interactionTimeout = null;
 
         function startContinuousScroll() {
@@ -1180,8 +1180,16 @@
                     
                     // Check if reached bottom
                     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                        // Restart from top
+                        // Pause scrolling and restart from top
+                        autoScrollActive = false;
                         window.scrollTo({ top: 0, behavior: 'smooth' });
+                        
+                        // Resume scrolling after smooth scroll completes
+                        setTimeout(() => {
+                            autoScrollActive = true;
+                            autoScrollInterval = requestAnimationFrame(scroll);
+                        }, 1000);
+                        return;
                     }
                     
                     // Continue scrolling
