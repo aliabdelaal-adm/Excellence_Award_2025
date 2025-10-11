@@ -2071,20 +2071,25 @@
             if (!container) return;
             
             // Projects that should show "قيد التطوير" (Under Development)
-            const underDevelopmentProjects = ['animal-welfare-system', 'data-dashboard'];
+            const underDevelopmentProjects = ['smart-reports', 'data-dashboard'];
             
             container.innerHTML = portfolioItems.map(item => {
-                // Determine the link text based on project ID
-                const linkText = underDevelopmentProjects.includes(item.id) 
-                    ? 'قيد التطوير 🔗' 
-                    : 'عرض المشروع 🔗';
+                // Determine the link and text based on project status
+                let linkUrl = item.fileUrl;
+                let linkText = 'عرض المشروع 🔗';
+                
+                // Check if the file URL is "#" or if it's in under development list
+                if (item.fileUrl === '#' || underDevelopmentProjects.includes(item.id)) {
+                    linkUrl = 'under-development.html';
+                    linkText = 'قيد التطوير 🚧';
+                }
                 
                 return `
                     <div class="portfolio-card">
                         <span class="icon">${item.icon}</span>
                         <h3>${item.title}</h3>
                         <p class="goals">${item.goals}</p>
-                        <a href="${item.fileUrl}" class="file-link" target="_blank">
+                        <a href="${linkUrl}" class="file-link" target="_blank">
                             ${linkText}
                         </a>
                     </div>
