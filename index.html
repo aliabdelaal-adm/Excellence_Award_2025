@@ -1338,9 +1338,172 @@
         .loading-spinner.active {
             animation: spinIcon 1s linear infinite;
         }
+
+        /* Smart Waiting Message Overlay */
+        .smart-waiting-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .smart-waiting-overlay.active {
+            display: flex;
+        }
+
+        .smart-waiting-content {
+            text-align: center;
+            max-width: 500px;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+            border-radius: 30px;
+            border: 2px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .smart-waiting-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(79, 172, 254, 0.6));
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .smart-waiting-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .smart-waiting-message {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .smart-waiting-spinner {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .smart-waiting-dot {
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .smart-waiting-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .smart-waiting-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .smart-waiting-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .smart-waiting-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe, #667eea);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: progressGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes progressGlow {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .smart-waiting-percentage {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
     </style>
 </head>
 <body>
+    <!-- Smart Waiting Message Overlay -->
+    <div class="smart-waiting-overlay" id="smartWaitingOverlay">
+        <div class="smart-waiting-content">
+            <div class="smart-waiting-icon" id="smartWaitingIcon">⏳</div>
+            <div class="smart-waiting-title" id="smartWaitingTitle">جاري التحميل...</div>
+            <div class="smart-waiting-message" id="smartWaitingMessage">
+                يرجى الانتظار بينما نجهز المحتوى لك
+            </div>
+            <div class="smart-waiting-spinner">
+                <div class="smart-waiting-dot"></div>
+                <div class="smart-waiting-dot"></div>
+                <div class="smart-waiting-dot"></div>
+            </div>
+            <div class="smart-waiting-progress" id="smartWaitingProgressContainer" style="display: none;">
+                <div class="smart-waiting-progress-bar" id="smartWaitingProgressBar"></div>
+            </div>
+            <div class="smart-waiting-percentage" id="smartWaitingPercentage" style="display: none;">0%</div>
+        </div>
+    </div>
     <!-- System Modal -->
     <div class="system-modal" id="systemModal">
         <div class="modal-header">
@@ -1790,6 +1953,156 @@
     </div>
 
     <script>
+        // Smart Waiting Message Functions
+        let smartWaitingTimeout = null;
+
+        /**
+         * Show the smart waiting message overlay
+         * @param {Object} options - Configuration options
+         * @param {string} options.title - Title text (default: "جاري التحميل...")
+         * @param {string} options.message - Message text (default: "يرجى الانتظار بينما نجهز المحتوى لك")
+         * @param {string} options.icon - Icon emoji (default: "⏳")
+         * @param {boolean} options.showProgress - Show progress bar (default: false)
+         * @param {number} options.autoHideAfter - Auto hide after milliseconds (default: null)
+         */
+        function showSmartWaiting(options = {}) {
+            const overlay = document.getElementById('smartWaitingOverlay');
+            const title = document.getElementById('smartWaitingTitle');
+            const message = document.getElementById('smartWaitingMessage');
+            const icon = document.getElementById('smartWaitingIcon');
+            const progressContainer = document.getElementById('smartWaitingProgressContainer');
+            const percentage = document.getElementById('smartWaitingPercentage');
+
+            // Set custom content if provided
+            if (options.title) title.textContent = options.title;
+            if (options.message) message.textContent = options.message;
+            if (options.icon) icon.textContent = options.icon;
+
+            // Show/hide progress bar
+            if (options.showProgress) {
+                progressContainer.style.display = 'block';
+                percentage.style.display = 'block';
+            } else {
+                progressContainer.style.display = 'none';
+                percentage.style.display = 'none';
+            }
+
+            // Show overlay
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Auto hide if specified
+            if (options.autoHideAfter && options.autoHideAfter > 0) {
+                clearTimeout(smartWaitingTimeout);
+                smartWaitingTimeout = setTimeout(() => {
+                    hideSmartWaiting();
+                }, options.autoHideAfter);
+            }
+
+            return {
+                updateProgress: updateSmartWaitingProgress,
+                updateTitle: updateSmartWaitingTitle,
+                updateMessage: updateSmartWaitingMessage,
+                hide: hideSmartWaiting
+            };
+        }
+
+        /**
+         * Hide the smart waiting message overlay
+         */
+        function hideSmartWaiting() {
+            const overlay = document.getElementById('smartWaitingOverlay');
+            
+            // Clear any pending auto-hide timeout
+            if (smartWaitingTimeout) {
+                clearTimeout(smartWaitingTimeout);
+                smartWaitingTimeout = null;
+            }
+
+            // Hide overlay
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+
+            // Reset to defaults after animation
+            setTimeout(() => {
+                if (!overlay.classList.contains('active')) {
+                    resetSmartWaitingDefaults();
+                }
+            }, 300);
+        }
+
+        /**
+         * Update the progress bar percentage
+         * @param {number} percent - Progress percentage (0-100)
+         */
+        function updateSmartWaitingProgress(percent) {
+            const progressBar = document.getElementById('smartWaitingProgressBar');
+            const percentage = document.getElementById('smartWaitingPercentage');
+            
+            const clampedPercent = Math.min(100, Math.max(0, percent));
+            progressBar.style.width = clampedPercent + '%';
+            percentage.textContent = Math.round(clampedPercent) + '%';
+        }
+
+        /**
+         * Update the title text
+         * @param {string} title - New title text
+         */
+        function updateSmartWaitingTitle(title) {
+            const titleElement = document.getElementById('smartWaitingTitle');
+            titleElement.textContent = title;
+        }
+
+        /**
+         * Update the message text
+         * @param {string} message - New message text
+         */
+        function updateSmartWaitingMessage(message) {
+            const messageElement = document.getElementById('smartWaitingMessage');
+            messageElement.textContent = message;
+        }
+
+        /**
+         * Reset smart waiting to default values
+         */
+        function resetSmartWaitingDefaults() {
+            document.getElementById('smartWaitingTitle').textContent = 'جاري التحميل...';
+            document.getElementById('smartWaitingMessage').textContent = 'يرجى الانتظار بينما نجهز المحتوى لك';
+            document.getElementById('smartWaitingIcon').textContent = '⏳';
+            document.getElementById('smartWaitingProgressBar').style.width = '0%';
+            document.getElementById('smartWaitingPercentage').textContent = '0%';
+        }
+
+        /**
+         * Show smart waiting with simulated progress
+         * @param {number} duration - Duration in milliseconds
+         * @param {Object} options - Additional options
+         */
+        function showSmartWaitingWithProgress(duration = 3000, options = {}) {
+            const waiting = showSmartWaiting({
+                ...options,
+                showProgress: true
+            });
+
+            let progress = 0;
+            const interval = 50; // Update every 50ms
+            const increment = (100 / duration) * interval;
+
+            const progressInterval = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        hideSmartWaiting();
+                    }, 500);
+                }
+                updateSmartWaitingProgress(progress);
+            }, interval);
+
+            return waiting;
+        }
+
         // Load projects data
         async function loadProjects() {
             try {
@@ -2199,8 +2512,21 @@
             }
         });
 
+        // Show smart waiting message on page load
+        window.addEventListener('load', () => {
+            // Hide the waiting message once everything is loaded
+            hideSmartWaiting();
+        });
+
         // Load projects and portfolio on page load
         document.addEventListener('DOMContentLoaded', () => {
+            // Show smart waiting message while loading content
+            showSmartWaiting({
+                title: 'مرحباً بك في منصة التميز',
+                message: 'جاري تحميل المحتوى...',
+                icon: '🚀'
+            });
+
             loadProjects();
             loadPortfolio();
         });
