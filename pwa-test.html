@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار PWA - PWA Test</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid rgba(79, 172, 254, 0.2);
+        }
+
+        .test-card h3 {
+            color: #00f2fe;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            display: inline-block;
+            margin: 0.5rem 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .status.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .status.info {
+            background: rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+            border: 1px solid #4facfe;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .log-entry {
+            margin: 0.3rem 0;
+            padding: 0.3rem;
+            border-left: 3px solid #4facfe;
+            padding-left: 0.5rem;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .icon-item {
+            text-align: center;
+        }
+
+        .icon-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+        }
+
+        .icon-item p {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 اختبار PWA | PWA Test Dashboard</h1>
+
+        <div class="test-grid">
+            <!-- Service Worker Test -->
+            <div class="test-card">
+                <h3>🔧 Service Worker</h3>
+                <div id="sw-status" class="status info">جاري الفحص...</div>
+                <button onclick="registerServiceWorker()">تسجيل Service Worker</button>
+                <button onclick="unregisterServiceWorker()">إلغاء التسجيل</button>
+                <div id="sw-log" class="log"></div>
+            </div>
+
+            <!-- Manifest Test -->
+            <div class="test-card">
+                <h3>📄 Web App Manifest</h3>
+                <div id="manifest-status" class="status info">جاري الفحص...</div>
+                <button onclick="checkManifest()">فحص Manifest</button>
+                <div id="manifest-log" class="log"></div>
+            </div>
+
+            <!-- Installation Test -->
+            <div class="test-card">
+                <h3>📲 التثبيت | Installation</h3>
+                <div id="install-status" class="status info">جاري الفحص...</div>
+                <button id="install-btn" onclick="installPWA()" disabled>تثبيت التطبيق</button>
+                <div id="install-log" class="log"></div>
+            </div>
+
+            <!-- Cache Test -->
+            <div class="test-card">
+                <h3>💾 Cache Storage</h3>
+                <div id="cache-status" class="status info">جاري الفحص...</div>
+                <button onclick="checkCache()">فحص Cache</button>
+                <button onclick="clearCache()">مسح Cache</button>
+                <div id="cache-log" class="log"></div>
+            </div>
+
+            <!-- Online/Offline Test -->
+            <div class="test-card">
+                <h3>📡 حالة الاتصال | Connection</h3>
+                <div id="connection-status" class="status info">جاري الفحص...</div>
+                <button onclick="testOffline()">اختبار Offline</button>
+                <div id="connection-log" class="log"></div>
+            </div>
+
+            <!-- Icons Test -->
+            <div class="test-card">
+                <h3>🎨 الأيقونات | Icons</h3>
+                <div id="icons-status" class="status info">جاري الفحص...</div>
+                <button onclick="checkIcons()">فحص الأيقونات</button>
+                <div id="icons-log" class="log"></div>
+            </div>
+        </div>
+
+        <!-- Icons Display -->
+        <div class="test-card">
+            <h3>🖼️ معاينة الأيقونات | Icons Preview</h3>
+            <div class="icon-grid" id="icon-preview"></div>
+        </div>
+    </div>
+
+    <script>
+        let deferredPrompt;
+        const swLog = document.getElementById('sw-log');
+        const manifestLog = document.getElementById('manifest-log');
+        const installLog = document.getElementById('install-log');
+        const cacheLog = document.getElementById('cache-log');
+        const connectionLog = document.getElementById('connection-log');
+        const iconsLog = document.getElementById('icons-log');
+
+        function addLog(logElement, message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logElement.appendChild(entry);
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        // Auto-run tests on load
+        window.addEventListener('load', function() {
+            checkServiceWorker();
+            checkManifest();
+            checkConnectionStatus();
+            displayIcons();
+            checkIcons();
+        });
+
+        // Service Worker Tests
+        function checkServiceWorker() {
+            const status = document.getElementById('sw-status');
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistration()
+                    .then(reg => {
+                        if (reg) {
+                            status.className = 'status success';
+                            status.textContent = '✅ مسجل | Registered';
+                            addLog(swLog, `Service Worker مسجل: ${reg.scope}`);
+                        } else {
+                            status.className = 'status error';
+                            status.textContent = '❌ غير مسجل | Not Registered';
+                            addLog(swLog, 'Service Worker غير مسجل');
+                        }
+                    });
+            } else {
+                status.className = 'status error';
+                status.textContent = '❌ غير مدعوم | Not Supported';
+                addLog(swLog, 'Service Worker غير مدعوم في هذا المتصفح');
+            }
+        }
+
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/Excellence_Award_2025/service-worker.js')
+                    .then(reg => {
+                        addLog(swLog, '✅ تم التسجيل بنجاح');
+                        checkServiceWorker();
+                    })
+                    .catch(err => {
+                        addLog(swLog, `❌ فشل التسجيل: ${err.message}`);
+                    });
+            }
+        }
+
+        function unregisterServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistration()
+                    .then(reg => {
+                        if (reg) {
+                            reg.unregister().then(() => {
+                                addLog(swLog, '✅ تم إلغاء التسجيل');
+                                checkServiceWorker();
+                            });
+                        }
+                    });
+            }
+        }
+
+        // Manifest Tests
+        function checkManifest() {
+            const status = document.getElementById('manifest-status');
+            fetch('manifest.webmanifest')
+                .then(response => response.json())
+                .then(manifest => {
+                    status.className = 'status success';
+                    status.textContent = '✅ موجود | Found';
+                    addLog(manifestLog, `Name: ${manifest.name}`);
+                    addLog(manifestLog, `Short Name: ${manifest.short_name}`);
+                    addLog(manifestLog, `Icons: ${manifest.icons.length} موجود`);
+                    addLog(manifestLog, `Theme Color: ${manifest.theme_color}`);
+                })
+                .catch(err => {
+                    status.className = 'status error';
+                    status.textContent = '❌ غير موجود | Not Found';
+                    addLog(manifestLog, `❌ خطأ: ${err.message}`);
+                });
+        }
+
+        // Installation Tests
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('install-btn');
+            const status = document.getElementById('install-status');
+            
+            installBtn.disabled = false;
+            status.className = 'status success';
+            status.textContent = '✅ جاهز للتثبيت | Ready';
+            addLog(installLog, '💡 التطبيق جاهز للتثبيت');
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        addLog(installLog, '✅ تم قبول التثبيت');
+                    } else {
+                        addLog(installLog, '❌ تم رفض التثبيت');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        window.addEventListener('appinstalled', () => {
+            const status = document.getElementById('install-status');
+            status.className = 'status success';
+            status.textContent = '✅ مثبت | Installed';
+            addLog(installLog, '✅ تم تثبيت التطبيق بنجاح');
+        });
+
+        // Cache Tests
+        function checkCache() {
+            if ('caches' in window) {
+                caches.keys().then(cacheNames => {
+                    const status = document.getElementById('cache-status');
+                    if (cacheNames.length > 0) {
+                        status.className = 'status success';
+                        status.textContent = `✅ ${cacheNames.length} Cache موجود`;
+                        cacheNames.forEach(name => {
+                            addLog(cacheLog, `📦 Cache: ${name}`);
+                            caches.open(name).then(cache => {
+                                cache.keys().then(keys => {
+                                    addLog(cacheLog, `   → ${keys.length} ملف محفوظ`);
+                                });
+                            });
+                        });
+                    } else {
+                        status.className = 'status info';
+                        status.textContent = 'ℹ️ لا يوجد Cache';
+                        addLog(cacheLog, 'لا يوجد cache محفوظ');
+                    }
+                });
+            }
+        }
+
+        function clearCache() {
+            if ('caches' in window) {
+                caches.keys().then(cacheNames => {
+                    return Promise.all(
+                        cacheNames.map(name => {
+                            addLog(cacheLog, `🗑️ مسح: ${name}`);
+                            return caches.delete(name);
+                        })
+                    );
+                }).then(() => {
+                    addLog(cacheLog, '✅ تم مسح جميع Cache');
+                    checkCache();
+                });
+            }
+        }
+
+        // Connection Tests
+        function checkConnectionStatus() {
+            const status = document.getElementById('connection-status');
+            if (navigator.onLine) {
+                status.className = 'status success';
+                status.textContent = '✅ متصل | Online';
+                addLog(connectionLog, '✅ متصل بالإنترنت');
+            } else {
+                status.className = 'status error';
+                status.textContent = '❌ غير متصل | Offline';
+                addLog(connectionLog, '❌ غير متصل بالإنترنت');
+            }
+        }
+
+        window.addEventListener('online', () => {
+            addLog(connectionLog, '✅ تم استعادة الاتصال');
+            checkConnectionStatus();
+        });
+
+        window.addEventListener('offline', () => {
+            addLog(connectionLog, '⚠️ فقدان الاتصال');
+            checkConnectionStatus();
+        });
+
+        function testOffline() {
+            addLog(connectionLog, 'ℹ️ لاختبار Offline: افتح DevTools → Network → Offline');
+        }
+
+        // Icons Tests
+        function checkIcons() {
+            const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            const status = document.getElementById('icons-status');
+            let successCount = 0;
+            let totalCount = iconSizes.length;
+
+            iconSizes.forEach(size => {
+                fetch(`icons/icon-${size}x${size}.png`)
+                    .then(response => {
+                        if (response.ok) {
+                            successCount++;
+                            addLog(iconsLog, `✅ icon-${size}x${size}.png (${response.headers.get('content-length')} bytes)`);
+                        } else {
+                            addLog(iconsLog, `❌ icon-${size}x${size}.png غير موجود`);
+                        }
+                        
+                        if (successCount === totalCount) {
+                            status.className = 'status success';
+                            status.textContent = `✅ جميع الأيقونات موجودة`;
+                        } else if (successCount > 0) {
+                            status.className = 'status info';
+                            status.textContent = `ℹ️ ${successCount}/${totalCount} موجود`;
+                        }
+                    })
+                    .catch(() => {
+                        addLog(iconsLog, `❌ icon-${size}x${size}.png خطأ في التحميل`);
+                    });
+            });
+        }
+
+        function displayIcons() {
+            const iconPreview = document.getElementById('icon-preview');
+            const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            
+            iconSizes.forEach(size => {
+                const iconItem = document.createElement('div');
+                iconItem.className = 'icon-item';
+                iconItem.innerHTML = `
+                    <img src="icons/icon-${size}x${size}.png" alt="${size}x${size}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%23333%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23fff%22%3E${size}%3C/text%3E%3C/svg%3E'">
+                    <p>${size}x${size}</p>
+                `;
+                iconPreview.appendChild(iconItem);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background for maskable icons -->
+  <rect width="100" height="100" fill="#0f172a"/>
+  
+  <!-- Excellence Award Logo Symbol -->
+  <!-- Star/Award Icon -->
+  <g transform="translate(50.0, 50.0)">
+    <!-- Outer Star -->
+    <path d="M 0,-24.0 L 6.0,-9.0 L 21.0,-6.0 L 9.0,3.0 L 15.0,18.0 L 0,10.799999999999999 L -15.0,18.0 L -9.0,3.0 L -21.0,-6.0 L -6.0,-9.0 Z" 
+          fill="url(#grad1)" 
+          stroke="#fff" 
+          stroke-width="1"/>
+    
+    <!-- Inner Circle -->
+    <circle cx="0" cy="0" r="7.199999999999999" fill="#0f172a" stroke="#00f2fe" stroke-width="2"/>
+    
+    <!-- Arabic Number 1 (indicating #1 Excellence) -->
+    <text x="0" y="3.0" 
+          font-family="Arial, sans-serif" 
+          font-size="9.0" 
+          font-weight="bold" 
+          fill="#00f2fe" 
+          text-anchor="middle">1</text>
+  </g>
+</svg>
